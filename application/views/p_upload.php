@@ -135,8 +135,73 @@ else
 
 								</form>
 
+								<br/>
+								<br/>
+
+								<b>Daftar Gambar</b>
+
+
+								<table id="example" class="display" style="width:100%">
+									<thead>
+									<tr>
+										<th>Name</th>
+										<th>Gambar</th>
+										<th>Delete</th>
+
+									</tr>
+									</thead>
+									<tbody>
+									<?php
+//									echo $this->uri->segment("3");
+									$gambar=$this->db->get_where("gambar_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("3")))->result();
+
+									$count=count($gambar);
+
+									$i=0;
+
+									while($i<$count)
+
+									{
+										?>
+										<tr>
+											<td><?php echo $gambar[$i]->gambar ?></td>
+											<td><img style="width:200px;" src="<?php echo base_url('gambar/'.$gambar[$i]->gambar) ?>"></td>
+											<td><button class="btn btn-danger" onclick="hapus('<?php echo $gambar[$i]->id_lap_perencanaan; ?>','<?php echo $gambar[$i]->gambar; ?>')">Delete</button></td>
+										</tr>
+									<?php
+
+										$i++;
+									}
+									?>
+									</tbody>
+								</table>
+
 
 							</div>
+
+
+							<script>
+                                $(document).ready(function() {
+                                    $('#example').DataTable();
+                                } );
+
+                                function hapus(per,gam)
+								{
+
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://localhost/pupr_new/index.php/upload/hapus1",
+                                        data: {"perencanaan":per,"nama":gam},
+                                        dataType: "text",
+                                        cache:false,
+                                        success:
+                                            function(data){
+                                                location.reload(true);
+                                            }
+                                    });
+								}
+							</script>
 
 						</div>
 					</div>
