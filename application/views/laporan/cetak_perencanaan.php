@@ -130,11 +130,10 @@ else
 			color:MediumPurple;
 		}
 
-		table
-		{
-			width: 100%;
-			border-collapse: collapse;
-		}
+
+
+
+		
 
 
 
@@ -157,62 +156,91 @@ else
 		 <center><h2>LAPORAN PELAKSANAAN KEGIATAN</h2></center>
 
 	 </b>
-	 <div class="row" >
-		 <div class="col-sm-6">
-			 <div class="row" style="text-align: center">
+	 <?php
+//	 Informasi Paket
+//	 Dapatkan id paket dahulu
+	 $id_paket_db=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("2")))->result();
+	 $count=count($id_paket_db);
+	 $i=0;
 
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Nama Paket</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8">
+	 $info_paket=0;
+//	 var_dump($id_paket_db);
+	 while($i<$count)
+	 {
+        $info_paket=$this->db->get_where("paket",array("id_paket"=>$id_paket_db[$i]->id_paket))->result();
+
+	 	$i++;
+	 }
+
+//	 var_dump($info_paket);
+
+
+	 if($info_paket!=0)
+	 {
+	 	?>
+		 <div class="row" >
+			 <div class="col-sm-6">
+				 <div class="row" style="text-align: center">
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Nama Paket</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8">
+                     <?php echo $info_paket[0]->nama ?>
+					 </div>
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Nilai Paket</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8">  <?php echo $info_paket[0]->nilai_paket ?></div>
+
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Jumlah Tahap</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8"> <?php echo $info_paket[0]->jumlah_tahap ?></div>
+
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Jenis Pekerjaan</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8"> <?php echo $info_paket[0]->jenis_pekerjaan ?></div>
+
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Masa Pelaksanaan</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8"> <?php echo $info_paket[0]->masa_pelaksanaan ?></div>
+
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Lokasi</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8"> <?php echo $info_paket[0]->lokasi ?></div>
+
+				 </div>
+				 <div class="row">
+					 <div class="col-sm-3">Tahun Anggaran</div>
+					 <div class="col-sm-1">:</div>
+					 <div class="col-sm-8"> <?php echo $info_paket[0]->tahun_anggaran ?></div>
 
 				 </div>
 
+				 <input type="hidden" value="<?php echo $this->uri->segment("2") ?>" id="id_perencanaan_hidden">
 			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Nilai Paket</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
 
-
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Jumlah Tahap</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
-
-
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Jenis Pekerjaan</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
-
-
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Masa Pelaksanaan</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
-
-
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Lokasi</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
-
-			 </div>
-			 <div class="row">
-				 <div class="col-sm-3">Tahun Anggaran</div>
-				 <div class="col-sm-1">:</div>
-				 <div class="col-sm-8"></div>
-
-			 </div>
 		 </div>
+	 <?php
 
-	 </div>
+	 }
+	 ?>
+
 	 <br/>
 
 	 <br>
@@ -230,102 +258,102 @@ else
 				 <table id="tabel_jadwal" width="400" class="table table-responsive" cellspacing="0" border="0">
 
 					 <tr>
-						 <td colspan="6" rowspan="4" height="80" >Jenis Pekerjaan</font></td>
-						 <td  colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
+						 <td cellspacing="'0'" colspan="6" rowspan="4" height="80" >Jenis Pekerjaan</font></td>
+						 <td cellspacing="'0'"  colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
 
 					 </tr>
 					 <tr>
-						 <td colspan="20" ><font >Tahap I</font></td>
-						 <td colspan="20" ><font >Tahap II</font></td>
-						 <td  colspan="20" ><font >Tahap III</font></td>
+						 <td cellspacing="'0'" colspan="20" ><font >Tahap I</font></td>
+						 <td cellspacing="'0'" colspan="20" ><font >Tahap II</font></td>
+						 <td cellspacing="'0'"  colspan="20" ><font >Tahap III</font></td>
 
 					 </tr>
 					 <tr>
-						 <td  colspan="5" ><font >Januari</font></td>
-						 <td  colspan="5" ><font >Februari<br>Maret</font></td>
-						 <td  colspan="5" ><font >Maret</font></td>
-						 <td  colspan="5" ><font >April</font></td>
-						 <td  colspan="5" ><font >Mei</font></td>
-						 <td  colspan="5" ><font >Juni</font></td>
-						 <td  colspan="5" ><font >Juli</font></td>
-						 <td  colspan="5" ><font >Agustus</font></td>
-						 <td  colspan="5" ><font >September</font></td>
-						 <td  colspan="5" ><font >Oktober</font></td>
-						 <td  colspan="5" ><font >November</font></td>
-						 <td  colspan="5" ><font >Desember</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Januari</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Februari<br>Maret</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Maret</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >April</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Mei</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Juni</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Juli</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Agustus</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >September</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Oktober</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >November</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Desember</font></td>
 
 					 </tr>
 					 <tr>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td  sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"  sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
 					 </tr>
 
 
@@ -340,102 +368,102 @@ else
 				 <table id="tabel_jumlah"  class="table table-responsive" cellspacing="0" border="0">
 
 					 <tr>
-						 <td  colspan="6" rowspan="4" height="80" align="center" valign="middle"><font >Jenis Pekerjaan</font></td>
-						 <td  colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
+						 <td cellspacing="'0'"  colspan="6" rowspan="4" height="80" align="center" valign="middle"><font >Jenis Pekerjaan</font></td>
+						 <td cellspacing="'0'"  colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
 
 					 </tr>
 					 <tr>
-						 <td  colspan="20" ><font >Tahap I</font></td>
-						 <td  colspan="20" ><font >Tahap II</font></td>
-						 <td  colspan="20" ><font >Tahap III</font></td>
+						 <td cellspacing="'0'"  colspan="20" ><font >Tahap I</font></td>
+						 <td cellspacing="'0'"  colspan="20" ><font >Tahap II</font></td>
+						 <td cellspacing="'0'"  colspan="20" ><font >Tahap III</font></td>
 
 					 </tr>
 					 <tr>
-						 <td  colspan="5" ><font >Januari</font></td>
-						 <td  colspan="5" ><font >Februari<br>Maret</font></td>
-						 <td  colspan="5" ><font >Maret</font></td>
-						 <td  colspan="5" ><font >April</font></td>
-						 <td  colspan="5" ><font >Mei</font></td>
-						 <td  colspan="5" ><font >Juni</font></td>
-						 <td  colspan="5" ><font >Juli</font></td>
-						 <td  colspan="5" ><font >Agustus</font></td>
-						 <td  colspan="5" ><font >September</font></td>
-						 <td  colspan="5" ><font >Oktober</font></td>
-						 <td  colspan="5" ><font >November</font></td>
-						 <td  colspan="5" ><font >Desember</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Januari</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Februari<br>Maret</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Maret</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >April</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Mei</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Juni</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Juli</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Agustus</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >September</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Oktober</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >November</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Desember</font></td>
 
 					 </tr>
 					 <tr>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000"  sdval="4" ><font >4</font></td>
-						 <td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000"  sdval="5" ><font >5</font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000"  sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000"  sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
 					 </tr>
 
 
@@ -457,102 +485,102 @@ else
 				 <table  id="tabel_alat" class="table table-responsive" cellspacing="0" border="0">
 
 					 <tr>
-						 <td  colspan="6" rowspan="4" height="80" align="center" valign="middle"><font >Jenis Bahan/Alat</font></td>
-						 <td colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
+						 <td cellspacing="'0'"  colspan="6" rowspan="4" height="80" align="center" valign="middle"><font >Jenis Bahan/Alat</font></td>
+						 <td cellspacing="'0'" colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
 
 					 </tr>
 					 <tr>
-						 <td colspan="20" ><font >Tahap I</font></td>
-						 <td colspan="20" ><font >Tahap II</font></td>
-						 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" colspan="20" ><font >Tahap III</font></td>
+						 <td cellspacing="'0'" colspan="20" ><font >Tahap I</font></td>
+						 <td cellspacing="'0'"   colspan="20" ><font >Tahap II</font></td>
+						 <td cellspacing="'0'"   colspan="20" ><font >Tahap III</font></td>
 
 					 </tr>
 					 <tr>
-						 <td colspan="5" ><font >Januari</font></td>
-						 <td colspan="5" ><font >Februari<br>Maret</font></td>
-						 <td  colspan="5" ><font >Maret</font></td>
-						 <td colspan="5" ><font >April</font></td>
-						 <td colspan="5" ><font >Mei</font></td>
-						 <td colspan="5" ><font >Juni</font></td>
-						 <td colspan="5" ><font >Juli</font></td>
-						 <td colspan="5" ><font >Agustus</font></td>
-						 <td colspan="5" ><font >September</font></td>
-						 <td colspan="5" ><font >Oktober</font></td>
-						 <td colspan="5" ><font >November</font></td>
-						 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" colspan="5" ><font >Desember</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Januari</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Februari<br>Maret</font></td>
+						 <td cellspacing="'0'"  colspan="5" ><font >Maret</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >April</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Mei</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Juni</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Juli</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Agustus</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >September</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >Oktober</font></td>
+						 <td cellspacing="'0'" colspan="5" ><font >November</font></td>
+						 <td cellspacing="'0'" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" colspan="5" ><font >Desember</font></td>
 
 					 </tr>
 					 <tr>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td  sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td   sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td   sdval="1" ><font >1</font></td>
-						 <td   sdval="2" ><font >2</font></td>
-						 <td   sdval="3" ><font >3</font></td>
-						 <td  sdval="4" ><font >4</font></td>
-						 <td   sdval="5" ><font >5</font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
-						 <td align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"  sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"   sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'"   sdval="1" ><font >1</font></td>
+						 <td cellspacing="'0'"   sdval="2" ><font >2</font></td>
+						 <td cellspacing="'0'"   sdval="3" ><font >3</font></td>
+						 <td cellspacing="'0'"  sdval="4" ><font >4</font></td>
+						 <td cellspacing="'0'"   sdval="5" ><font >5</font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
+						 <td cellspacing="'0'" align="left" valign="bottom"><font ><br></font></td>
 					 </tr>
 
 
@@ -581,7 +609,7 @@ else
 						 </thead>
 						 <tbody>
 						 <tr style="height:300px;">
-							 <td>
+							 <td cellspacing="'0'">
 								 <?php
 								 $getImage=$this->db->get_where("gambar_perencanaan",array("id_lap_perencanaan"=>$this->uri->Segment("2")))->result();
 								 //
@@ -600,11 +628,33 @@ else
 								 ?>
 
 							 </td>
-							 <td></td>
-							 <td></td>
-							 <td></td>
-							 <td></td>
-							 <td></td>
+							 <?php
+							 //							 Dapatkan datanya
+							 $info_perencanaan=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("2")))->result();
+							 $count=count($info_perencanaan);
+							 $loaksiM="";
+							 $jenis_pekerjaanM="";
+							 $panjang_penangananM="";
+							 $keterangan_dimensiM="";
+							 $keteranganM="";
+
+							 if($count>0)
+							 {
+								 $loaksiM=$info_perencanaan[0]->lokasi;
+								 $jenis_pekerjaanM=$info_perencanaan[0]->jenis_pekerjaan;
+								 $panjang_penangananM=$info_perencanaan[0]->panjang_penanganan;
+								 $keterangan_dimensiM=$info_perencanaan[0]->keterangan_dimensi;
+								 $keteranganM=$info_perencanaan[0]->keterangan;
+							 }
+							 ?>
+							 <td cellspacing="'0'" id="lokasiM"><?php echo $loaksiM ?></td>
+							 <td cellspacing="'0'" id="jenis_pekerjaanM"><?php echo $jenis_pekerjaanM ?></td>
+							 <td cellspacing="'0'" id="panjang_penangananM"><?php echo $panjang_penangananM ?></td>
+							 <td cellspacing="'0'" id="keterangan_dimensiM"><?php echo  $keterangan_dimensiM ?></td>
+							 <td cellspacing="'0'" id="ketM"><?php echo $keteranganM ?></td>
+
+
+
 						 </tr>
 						 </tbody>
 					 </table>
@@ -614,7 +664,10 @@ else
 				 <div class="row">
 					 <div class="col-sm-3">
 						<b> Disetujui Oleh</b>
-						 <div class="row">
+						 <br/>
+						 <br/>
+						 <br/>
+
 							 <?php
 							 $data=$this->db->get_where("ttd_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("2")))->result();
 
@@ -622,19 +675,57 @@ else
 
 							 if($count>=1)
 							 {
-							 	echo $data[0]->id_disetujui;
+//							 	echo $data[0]->id_disetujui;
+//								 Ambil namanya lagi
+								 $ambil=$this->db->get_where("konfigurasi",array("id_konfigurasi"=>$data[0]->id_disetujui))->result();
+
+								 echo "<b>".$ambil[0]->nama."</b>";
 							 }
 							 ?>
-						 </div>
+
 					 </div>
 					 <div class="col-sm-2"></div>
 					 <div class="col-sm-3">
 						 <b>Diperiksa Oleh</b>
+						 <br/>
+						 <br/>
+						 <br/>
+						 <?php
+						 $data=$this->db->get_where("ttd_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("2")))->result();
+
+						 $count=count($data);
+
+						 if($count>=1)
+						 {
+//							 	echo $data[0]->id_disetujui;
+//								 Ambil namanya lagi
+							 $ambil=$this->db->get_where("konfigurasi",array("id_konfigurasi"=>$data[0]->id_diperiksa))->result();
+
+							 echo "<b>".$ambil[0]->nama."</b>";
+						 }
+						 ?>
 						 <div class="row"></div>
 					 </div>
 					 <div class="col-sm-1"></div>
 					 <div class="col-sm-3">
 						 <b>Dibuat Oleh</b>
+						 <br/>
+						 <br/>
+						 <br/>
+						 <?php
+						 $data=$this->db->get_where("ttd_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("2")))->result();
+
+						 $count=count($data);
+
+						 if($count>=1)
+						 {
+//							 	echo $data[0]->id_disetujui;
+//								 Ambil namanya lagi
+							 $ambil=$this->db->get_where("account",array("nip"=>$data[0]->id_user))->result();
+
+							 echo "<b>".$ambil[0]->nama."</b>";
+						 }
+						 ?>
 						 <div class="row"></div>
 					 </div>
 				 </div>
@@ -653,12 +744,12 @@ else
 
 
              var newRow="\t<tr id='pekerjaan_id"+pekerjaan_id+"'>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
                  "\n" +
                  "\n" +
                  "\t\t\t\t\t\t\t\t\t</tr>";
@@ -666,12 +757,12 @@ else
              $("#tabel_jadwal").append(newRow);
 
              var newRow="\t<tr id='pekerjaan_waktu"+pekerjaan_id+"'>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
                  "\n" +
                  "\n" +
                  "\t\t\t\t\t\t\t\t\t</tr>";
@@ -686,8 +777,8 @@ else
                  data=data.toString();
                  data1=data1.toString();
                  console.log(data);
-                 var newCol="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai('"+data+"')\" id='"+data+"' class='nonActive'></td>";
-                 var newCol1="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai1('"+data1+"')\" id='"+data1+"' class='nonActive1'></td>";
+                 var newCol="<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai('"+data+"')\" id='"+data+"' class='nonActive'></td>";
+                 var newCol1="<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai1('"+data1+"')\" id='"+data1+"' class='nonActive1'></td>";
                  $("#pekerjaan_id"+pekerjaan_id).append(newCol);
                  $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
                  x++;
@@ -798,12 +889,12 @@ else
              // alert(alat_bahan_text);
 
              var newRowX="\t<tr id='pekerjaan_waktu_"+alat_bahan+"'>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+alat_bahan_text+"</td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
-                 "\t\t\t\t\t\t\t\t\t\t<td style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" height=\"20\" align=\"left\" valign=\"bottom\">"+alat_bahan_text+"</td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"left\" valign=\"bottom\"></td>\n" +
+                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"\" align=\"center\" valign=\"bottom\"></td>\n" +
                  "\n" +
                  "\n" +
                  "\t\t\t\t\t\t\t\t\t</tr>";
@@ -818,7 +909,7 @@ else
                  data=data.toString();
 
                  console.log(data);
-                 var newColX="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"tambahAngka('"+data+"')\" id='"+data+"' class='nonActive2'></td>";
+                 var newColX="<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"tambahAngka('"+data+"')\" id='"+data+"' class='nonActive2'></td>";
                  $("#pekerjaan_waktu_"+alat_bahan).append(newColX);
                  x++;
              }
@@ -966,12 +1057,12 @@ else
                          //it doesn't exist
 
                          var newRow="\t<tr id='"+data1[x].id+pekerjaan_id+"'>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td >"+pekerjaan_text+"</td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' >"+pekerjaan_text+"</td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
                              "\n" +
                              "\n" +
                              "\t\t\t\t\t\t\t\t\t</tr>";
@@ -979,12 +1070,12 @@ else
                          $("#tabel_jadwal").append(newRow);
 
                          var newRow="\t<tr id='pekerjaan_waktu"+pekerjaan_id+"'>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td >"+pekerjaan_text+"</td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
-                             "\t\t\t\t\t\t\t\t\t\t<td ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' >"+pekerjaan_text+"</td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' ></td>\n" +
                              "\n" +
                              "\n" +
                              "\t\t\t\t\t\t\t\t\t</tr>";
@@ -1007,8 +1098,8 @@ else
                          data_=data_.toString();
                          // data1=data1.toString();
                          // console.log(data);
-                         let newCol="<td  onclick=\"warnai('"+data_+"')\" id='"+data_+"' class='nonActive'></td>";
-                         var newCol1="<td onclick=\"warnai1('"+data2+"')\" id='"+data2+"' class='nonActive1'></td>";
+                         let newCol="<td cellspacing='0'  onclick=\"warnai('"+data_+"')\" id='"+data_+"' class='nonActive'></td>";
+                         var newCol1="<td cellspacing='0' onclick=\"warnai1('"+data2+"')\" id='"+data2+"' class='nonActive1'></td>";
                          $("#"+data1[x].id+pekerjaan_id).append(newCol);
                          $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
                          // $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
@@ -1049,12 +1140,72 @@ else
                  filename:     'myfile.pdf',
                  image:        { type: 'jpeg', quality: 0.98 },
                  html2canvas:  { scale: 2 },
-                 jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' }
+                 jsPDF:        { unit: 'in', format: 'A2', orientation: 'landscape' }
              };
              // Choose the element and save the PDF for our user.
              html2pdf().set(opt).from(element).save();
              // html2pdf().from(element).save();
          }
+
+
+     //    Generate Tabel Bahan Alat
+         <!--	Generate Tabel Bahan Alat-->
+		 let id_perencanaan_hidden=$("#id_perencanaan_hidden").val();
+         $.ajax({
+             type: "POST",
+             url: "http://localhost/pupr_new/edit_perencanaan_user/bahan_alat",
+             data: {"id_perencanaan":id_perencanaan_hidden},
+             dataType: "text",
+             cache:false,
+             success:
+                 function(data){
+                     data=JSON.parse(data);
+                     console.log("jesi");
+                     console.log(data);
+                     console.log("jesi");
+
+                     //    Generate table rows
+
+                     let length= data.length;
+                     let i=0;
+                     while(i<length)
+                     {
+                         var newRowX="\t<tr id='pekerjaan_waktu_"+data[i].id_jenis_bahan_alat+"'>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000; border-left: 2px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+data[i].jenis_bahan_alat+"</td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                             "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"center\" valign=\"bottom\"></td>\n" +
+                             "\n" +
+                             "\n" +
+                             "\t\t\t\t\t\t\t\t\t</tr>";
+                         $("#tabel_alat").append(newRowX);
+                         let x=1;
+                         while(x<=60)
+                         {
+                             let data_=data[i].id_jenis_bahan_alat+"___"+x;
+
+
+
+                             data_=data_.toString();
+
+
+                             var newColX="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"tambahAngka('"+data_+"')\" id='"+data_+"' class='nonActive2'></td>";
+                             $("#pekerjaan_waktu_"+data[i].id_jenis_bahan_alat).append(newColX);
+                             x++;
+                         }
+
+                         // alert(data[i].id_jenis_bahan_alat+"___"+data[i].minggu);
+                         $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).text(data[i].jumlah);
+                         $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).removeClass( "nonActive2" );
+                         $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).addClass( "Active2" );
+
+
+                         i++;
+                     }
+                 }
+         });
 	 </script>
 
  </div>

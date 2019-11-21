@@ -5,13 +5,14 @@ if($this->session->userdata("privilage"))
 	{
 		redirect(base_url('admin'));
 	}
-	else if($this->session->userdata("privilage")==1)
+	else if($this->session->userdata("privilage")==2)
 	{
 		redirect(base_url('user'));
 	}
 }
 else
 {
+//	Ubah Redirectnya
 
 }
 ?>
