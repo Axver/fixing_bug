@@ -167,6 +167,29 @@ else
 								</select>
 
 								<button class="btn btn-info" onclick="buatTabel()">Generate</button>
+								<br/>
+								<b>Diperiksa Oleh</b>
+								<select class="form form-control" id="diperiksa_oleh">
+									<?php
+									$diperiksa=$this->db->get("konfigurasi")->result();
+									$count=count($diperiksa);
+									$i=0;
+
+
+									while($i<$count)
+									{
+										?>
+										<option value="<?php echo $diperiksa[$i]->nama; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
+										<?php
+
+										$i++;
+									}
+									?>
+								</select>
+
+								<br/>
+								<b>Pagu:</b>
+								<input type="text" class="form form-control" id="pagu">
 
 <!--								<button class="btn btn-info" onclick="addRow()">Add Row</button>-->
 								<br/>
@@ -213,7 +236,7 @@ else
 									 <div class="row">
 										 <div class="col-sm-3">Pagu</div>
 										 <div class="col-sm-1">:</div>
-										 <div class="col-sm-3"></div>
+										 <div class="col-sm-3" id="pagu_text"></div>
 									 </div>
 									 <br/>
 
@@ -265,6 +288,8 @@ else
 										 <!--									</tr>-->
 									 </table>
 
+									 <div class="break"></div>
+
 									 <table class="tg table table-bordered" id="tabel_dua">
 										 <!--									<tr>-->
 										 <!--										<th class="tg-cly1" rowspan="3">Jenis Pekerjaan</th>-->
@@ -311,6 +336,44 @@ else
 										 <!--										<td class="tg-0lax"></td>-->
 										 <!--									</tr>-->
 									 </table>
+									 <div class="break"></div>
+
+
+
+									 <br/>
+									 <br/>
+									 <br/>
+
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><b>Diperiksa Oleh</b></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b>Dibuat Oleh</b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
+									 <br/>
+									 <br/>
+									 <br/>
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><b id="diperiksa"></b></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b id="dibuat"><?php
+													 $data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
+													 $count=count($data);
+													 $i=0;
+
+													 while($i<$count)
+													 {
+														 echo $data[$i]->nama;
+
+														 $i++;
+													 }
+													 ?></b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
 
 
 
@@ -556,6 +619,10 @@ else
 
 	function buatTabel()
 	{
+	    let pagu=$("#pagu").val();
+	    $("#pagu_text").text(pagu);
+        let diperiksa=$("#diperiksa_oleh").val();
+        $("#diperiksa").text(diperiksa);
         let nama_paket=$("#id_paket option:selected").text();
         $("#nama_paket_1").text(nama_paket);
 	    hapusTabel();
@@ -646,6 +713,7 @@ else
 
                     while(i<length)
                     {
+                        $("#jp_jesi").append(data[i].nama_jenis+"<br/>");
 
                         $("#tabel_satu").append('\n' +
                             '\t\t\t\t\t\t\t\t\t<tr>\n' +
@@ -962,6 +1030,27 @@ else
                 }
         });
 
+        //Ambil informasi dari laporan perencanaan
+        let laper_info=$("#lap_perencanaan").val();
+        $.ajax({
+            type: "POST",
+            url: "http://localhost/pupr_new/generate_minggu/info",
+            data: {"id_laper":laper_info},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    data=JSON.parse(data);
+                    let length=data.length;
+                    let i=0;
+
+                    while(i<length)
+                    {
+                        $("#lokasi_jesi").text(data[i].lokasi);
+                        i++;
+                    }
+                }
+        });
 
 
 
