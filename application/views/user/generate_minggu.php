@@ -248,28 +248,61 @@ else
 									<br/>
 									<br/>
 
-									<div class="row">
-										<div class="col-sm-3">Nama Paket</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-3" id="nama_paket_1"></div>
-									</div>
+					                <div class="row">
 
-									<div class="row">
-										<div class="col-sm-3">Jenis Pekerjaan</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-3" id="jp_jesi"></div>
-									</div>
+										<div class="col-sm-8">
+											<div class="row">
+												<div class="col-sm-3">Nama Paket</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-3" id="nama_paket_1"></div>
+											</div>
 
-									<div class="row">
-										<div class="col-sm-3">Lokasi</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-3" id="lokasi_jesi"></div>
-									</div>
+											<div class="row">
+												<div class="col-sm-3">Jenis Pekerjaan</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-3" id="jp_jesi"></div>
+											</div>
 
-									<div class="row">
-										<div class="col-sm-3">Pagu</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-3"></div>
+											<div class="row">
+												<div class="col-sm-3">Lokasi</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-3" id="lokasi_jesi"></div>
+											</div>
+
+											<div class="row">
+												<div class="col-sm-3">Pagu</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-3"></div>
+											</div>
+										</div>
+										<div class="col-sm-4" style="border:2px solid black">
+											<div class="row">
+												<div class="col-sm-7">Progress Pekerjaan</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-4" id="progress-pekerjaan"></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-7">Progress Fisik Periode Lalu</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-4" id="progress-fisik-lalu"></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-7">Progress Fisik Minggu</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-4" id="progress-fisik-minggu"></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-7">Progress Fisik Selanjutnya</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-4" id="progress-fisik-next"></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-7">Progress Fisik Total</div>
+												<div class="col-sm-1">:</div>
+												<div class="col-sm-4" id="progress-fisik-total"></div>
+											</div>
+										</div>
+
 									</div>
 
 									<br/>
@@ -972,9 +1005,174 @@ else
             }
 
         }
+        generate_progress();
 
         swal("Data Digenerate!!");
+
+
+    //    Generate data progress
+
     }
+
+
+    function generate_progress()
+	{
+
+        let id_minggu = $("#id_minggu").val();
+        let bulan_diinginkan = $("#bulan_diinginkan").val();
+        let tahun_hidden = $("#tahun_hidden").val();
+
+        let check = getWeeksInMonth(bulan_diinginkan, tahun_hidden);
+        // alert(check);
+
+        if (id_minggu <= check) {
+            //    Jika minggunya ada sekarang check tanggak berapa di minggu tersebut
+            let y = 1;
+            let total_minggu = 0;
+
+            while (y <= bulan_diinginkan) {
+                total_minggu = total_minggu + getWeeksInMonth(y, tahun_hidden)
+                //hitung jumlah minggu yang ada
+
+                y++;
+            }
+
+            total_minggu = parseInt(total_minggu) - parseInt(check) + parseInt(id_minggu);
+
+            //    Selanjutnya cari tahu tanggal berapa di minggu tersebut
+
+            let rentang_hari = getDateRangeOfWeek(total_minggu);
+
+
+            //    Dapatkan Start dan ENd Dari Tanggal Tersebut
+            rentang_hari = rentang_hari.split(" to ");
+
+            let id_lap_perencanaan_baru = $("#id_lap_perencanaan").val();
+			//Sum Jumlah Pekerja
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/pupr_new/generate_minggu/between_pekerja",
+                data: {"start": rentang_hari[0], "end": rentang_hari[1],"id_lap_perencanaan":id_lap_perencanaan_baru},
+                async: false,
+                dataType: "text",
+                cache: false,
+                success:
+                    function (data) {
+                        data = JSON.parse(data);
+              
+                        let jumlah_pekerja_total;
+                        let length=data.length;
+                        let i=0;
+                        while(i<length)
+						{
+						    jumlah_pekerja_total=data[i].sum;
+						    i++;
+						}
+
+
+                        //Sum Jumlah Tukang
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost/pupr_new/generate_minggu/between_tukang",
+                            data: {"start": rentang_hari[0], "end": rentang_hari[1],"id_lap_perencanaan":id_lap_perencanaan_baru},
+                            async: false,
+                            dataType: "text",
+                            cache: false,
+                            success:
+                                function (data) {
+                                    data = JSON.parse(data);
+
+                                    let jumlah_tukang_total;
+                                    let length=data.length;
+                                    let i=0;
+                                    while(i<length)
+                                    {
+                                        jumlah_tukang_total=data[i].sum;
+                                        i++;
+                                    }
+
+
+                                //    Ambil Bahan Alat
+                                    let id_lap_perencanaan_jesi=$("#id_lap_perencanaan").val();
+
+                                    //    Ajax Jenis Alat
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://localhost/pupr_new/generate_minggu/jenis_alat1",
+                                        asynd:false,
+                                        data: {"id_lap_perencanaan":id_lap_perencanaan_jesi},
+                                        dataType: "text",
+                                        cache:false,
+                                        success:
+                                            function(data){
+                                                data=JSON.parse(data);
+                                                // console.log("jesijesijesi");
+                                                // console.log(data);
+                                                // console.log("jesijesijesi");
+                                                let length=data.length;
+                                                let z=0;
+                                                let jumlah_alat_total=0;
+
+                                                while(z<length)
+												{
+												    jumlah_alat_total=parseInt(jumlah_alat_total)+(parseInt(data[z].sum)*parseInt(data[z].harga));
+
+												    z++;
+												}
+
+                                                let total_all=parseInt(jumlah_pekerja_total)+parseInt(jumlah_tukang_total)+parseInt(jumlah_alat_total);
+
+                                            //    Ambil nilai paket
+												let id_paket_hmm=$("#id_paket").val();
+                                                $.ajax({
+                                                    type: "POST",
+													async:false,
+                                                    url: "http://localhost/pupr_new/generate_minggu/nilai_paket",
+                                                    data: {"id_paket":id_paket_hmm},
+                                                    dataType: "text",
+                                                    cache:false,
+                                                    success:
+                                                        function(data){
+                                                            data=JSON.parse(data);
+                                                            let length=data.length;
+                                                            let i=0;
+                                                            let nilai_paket;
+                                                            while(i<length)
+															{
+															    nilai_paket=data[i].nilai_paket;
+
+															    i++;
+															}
+
+                                                            nilai_paket=parseInt(nilai_paket);
+
+                                                            let hasil_akhir=total_all/nilai_paket;
+															// console.log(total_all);
+
+                                                            hasil_akhir=parseFloat(hasil_akhir);
+                                                            hasil_akhir=hasil_akhir.toFixed(2)
+
+                                                        //    Append kan datanya gan
+															$("#progress-pekerjaan").text(hasil_akhir+"%");
+                                                        }
+                                                });
+
+
+                                            }
+                                    });
+
+
+
+                                }
+                        });
+
+
+
+                    }
+            });
+        }
+
+	}
 
 
 
