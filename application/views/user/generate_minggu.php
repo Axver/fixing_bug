@@ -231,7 +231,7 @@ else
 									while($i<$count)
 									{
 										?>
-										<option value="<?php echo $diperiksa[$i]->nama; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
+										<option value="<?php echo $diperiksa[$i]->id_konfigurasi; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
 										<?php
 
 										$i++;
@@ -312,7 +312,7 @@ else
 									<br/>
 
 <!--									Tabelnya-->
-									<table class="tg table table-bordered" id="buat_tabel">
+									<table class="tg table table-bordered" id="buat_tabel" style="border: 1px solid black;">
 
 <!--
 <!--										<tr>-->
@@ -355,11 +355,41 @@ else
 <!--										</tr>-->
 									</table>
 
+									<?php
+									function tgl_indo($tanggal){
+										$bulan = array (
+											1 =>   'Januari',
+											'Februari',
+											'Maret',
+											'April',
+											'Mei',
+											'Juni',
+											'Juli',
+											'Agustus',
+											'September',
+											'Oktober',
+											'November',
+											'Desember'
+										);
+										$pecahkan = explode('-', $tanggal);
+
+										// variabel pecahkan 0 = tanggal
+										// variabel pecahkan 1 = bulan
+										// variabel pecahkan 2 = tahun
+
+										return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+									}
+									?>
+
 									<div class="row">
 										<div class="col-sm-1"></div>
-										<div class="col-sm-3"><center><b>Diperiksa Oleh</b></center></div>
+										<div class="col-sm-3"><center><b>Diperiksa Oleh</b><br/><b id="konf_kerja"></b></center></div>
 										<div class="col-sm-4"></div>
-										<div class="col-sm-3"><center><b>Dibuat Oleh</b></center></div>
+										<div class="col-sm-3"><center>
+												<b>Jambi, <?php
+
+													echo tgl_indo(date('Y-m-d'));  ?></b>
+												<br/><b>Dibuat Oleh</b></center></div>
 										<div class="col-sm-1"></div>
 									</div>
 
@@ -368,7 +398,7 @@ else
 									<br/>
 									<div class="row">
 										<div class="col-sm-1"></div>
-										<div class="col-sm-3"><center><b id="diperiksa"></b></center></div>
+										<div class="col-sm-3"><center><u><b id="diperiksa"> </b></u><br/><b id="nip_dip"></b></center></div>
 										<div class="col-sm-4"></div>
 										<div class="col-sm-3"><center><b id="dibuat"><?php
 													$data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
@@ -377,7 +407,9 @@ else
 
 													while($i<$count)
 													{
-														echo $data[$i]->nama;
+														echo "<u>".$data[$i]->nama."</u>";
+														echo "<br/>";
+														echo $data[$i]->nip;
 
 														$i++;
 													}
@@ -441,6 +473,8 @@ else
 		</footer>
 		<!-- End of Footer -->
 
+
+
 	</div>
 	<!-- End of Content Wrapper -->
 
@@ -474,8 +508,10 @@ else
 
 
 <script>
+
+
 	function addPerencanaan()
-	{
+	{   $("#id_lap_perencanaan").empty();
 	    $data=$("#id_paket").val();
 	    // alert($data);
 	    //Isi Select Laporan Perencanaan
@@ -508,8 +544,35 @@ else
 	    // alert(nama_paket);
 	    $("#nama_paket_1").text(nama_paket);
 
-	    let diperiksa=$("#diperiksa_oleh").val();
+	    let diperiksa=$("#diperiksa_oleh option:selected").text();
 	    $("#diperiksa").text(diperiksa);
+
+	    let diperiksa_=$("#diperiksa_oleh").val();
+	    // alert(diperiksa_);
+	    //konf_kerja data
+        $.ajax({
+            type: "POST",
+			async:false,
+            url: "http://localhost/pupr_new/generate_minggu/bidang",
+            data: {"id_konfigurasi":diperiksa_},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    data=JSON.parse(data);
+                    let length=data.length;
+                    let i=0;
+                    // alert(data);
+
+                    while(i<length)
+					{
+					    $("#konf_kerja").text(data[i].jabatan);
+                        $("#nip_dip").text(data[i].nip);
+
+					    i++;
+					}
+                }
+        });
 
 
 
