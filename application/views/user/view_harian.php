@@ -172,11 +172,9 @@ else
 									<div class="col-sm-2">
 										Nama Paket
 									</div>
-									<div class="col-sm-1">
-										:
-									</div>
 
-									<div class="col-sm-4" id="nama_paket">
+
+									<div class="col-sm-2" id="nama_paket">:
 
 
 
@@ -193,11 +191,9 @@ else
 									<div class="col-sm-2">
 										Lokasi
 									</div>
-									<div class="col-sm-1">
-										:
-									</div>
 
-									<div class="col-sm-4" id="lokasi">
+
+									<div class="col-sm-4" id="lokasi">:
 										<?php
 										$get_waw=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment('4')))->result();
 										$count=count($get_waw);
@@ -217,11 +213,9 @@ else
 									<div class="col-sm-2">
 										Hari/Tanggal
 									</div>
-									<div class="col-sm-1">
-										:
-									</div>
 
-									<div class="col-sm-4" id="hari_tanggal">
+
+									<div class="col-sm-4" id="hari_tanggal">:
                                      <?php echo $this->uri->segment("3"); ?>
 									</div>
 								</div>
@@ -290,7 +284,42 @@ else
 
 								<div class="row">
 									<div class="col-sm-1"></div>
-									<div class="col-sm-3"><center><b>Diperiksa Oleh</b> <br/>
+									<div class="col-sm-3"><center><b>Diperiksa Oleh</b><br/><b>
+											<?php
+											$data=$this->db->get_where("ttd_harian",array("id_lap_harian"=>$this->uri->segment("3"),"id_lap_perencanaan"=>$this->uri->segment("4")))->result();
+											$count=count($data);
+											$i=0;
+
+											while($i<$count)
+											{
+												$ambil=$data[$i]->id_diperiksa;
+//													Ambil nama dari database
+												$nama=$this->db->get_where("konfigurasi",array("id_konfigurasi"=>$ambil))->result();
+												$count1=count($nama);
+												$ii=0;
+												while($ii<$count1)
+												{
+
+													echo $nama[$ii]->jabatan;
+
+
+													$ii++;
+												}
+
+												$i++;
+											}
+											?></b></center></div>
+									<div class="col-sm-4"></div>
+									<div class="col-sm-3"><center><b>Jambi,<?php echo tgl_indo(date('Y-m-d')); ?></b><br/><b>Dibuat Oleh</b></center></div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<br/>
+								<br/>
+								<br/>
+								<div class="row">
+									<div class="col-sm-1"></div>
+									<div class="col-sm-3"><center>
 											<b>
 												<?php
 												$data=$this->db->get_where("ttd_harian",array("id_lap_harian"=>$this->uri->segment("3"),"id_lap_perencanaan"=>$this->uri->segment("4")))->result();
@@ -307,7 +336,11 @@ else
 													while($ii<$count1)
 													{
 
-														echo $nama[$ii]->jabatan;
+														echo "<u>";
+														echo $nama[$ii]->nama;
+														echo "</u>";
+														echo "<br/>";
+														echo "NIP:".$nama[$ii]->nip;
 
 
 														$ii++;
@@ -318,102 +351,58 @@ else
 												?>
 											</b>
 										</center></div>
+									<?php
+									function tgl_indo($tanggal){
+										$bulan = array (
+											1 =>   'Januari',
+											'Februari',
+											'Maret',
+											'April',
+											'Mei',
+											'Juni',
+											'Juli',
+											'Agustus',
+											'September',
+											'Oktober',
+											'November',
+											'Desember'
+										);
+										$pecahkan = explode('-', $tanggal);
+
+										// variabel pecahkan 0 = tanggal
+										// variabel pecahkan 1 = bulan
+										// variabel pecahkan 2 = tahun
+
+										return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+									}
+									?>
+
 									<div class="col-sm-4"></div>
-									<div class="col-sm-3">
-
-										<div class="row">
-											<center>
-											<b>Jambi, <?php
-
-												echo tgl_indo(date('Y-m-d'));  ?></b>
-											<br/><b>Dibuat Oleh</b></div>
-										</center>
-										</div>
-
-									<div class="col-sm-1"></div>
-								</div>
-
-								<br/>
-
-								<br/>
-
-								<br/>
-								<?php
-								function tgl_indo($tanggal){
-									$bulan = array (
-										1 =>   'Januari',
-										'Februari',
-										'Maret',
-										'April',
-										'Mei',
-										'Juni',
-										'Juli',
-										'Agustus',
-										'September',
-										'Oktober',
-										'November',
-										'Desember'
-									);
-									$pecahkan = explode('-', $tanggal);
-
-									// variabel pecahkan 0 = tanggal
-									// variabel pecahkan 1 = bulan
-									// variabel pecahkan 2 = tahun
-
-									return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
-								}
-								?>
-
-
-								<div class="row">
-									<div class="col-sm-1"></div>
-									<div class="col-sm-3"><center><b>
-
-												<?php
-												$data=$this->db->get_where("ttd_harian",array("id_lap_harian"=>$this->uri->segment("3"),"id_lap_perencanaan"=>$this->uri->segment("4")))->result();
-												$count=count($data);
-												$i=0;
-
-												while($i<$count)
-												{
-													$ambil=$data[$i]->id_diperiksa;
-//													Ambil nama dari database
-													$nama=$this->db->get_where("konfigurasi",array("id_konfigurasi"=>$ambil))->result();
-													$count1=count($nama);
-													$ii=0;
-													while($ii<$count1)
-													{
-														echo "<u>";
-														echo $nama[$ii]->nama;
-														echo "</u>";
-														echo "<br/>";
-														echo $nama[$ii]->nip;
-
-														$ii++;
-													}
-
-													$i++;
-												}
-												?>
-											</b></center></div>
-									<div class="col-sm-4"></div>
-									<div class="col-sm-3" style="text-align: center;"><center><b>		<?php
+									<div class="col-sm-3"><center><b><?php
 												$data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
 												$count=count($data);
 												$i=0;
 
 												while($i<$count)
 												{
-													echo "<center>"."<u>".$data[$i]->nama."</u>"."</center>";
-													echo "<center>";
-													echo $data[$i]->nip;
-													echo "</center>";
+
+													echo "<u>".$data[$i]->nama."</u>";
+													echo "<br/>";
+													echo "NIP:".$data[$i]->nip;
+
+
 
 													$i++;
 												}
 												?></b></center></div>
 									<div class="col-sm-1"></div>
 								</div>
+
+
+
+
+
+
 
 
 
@@ -472,7 +461,7 @@ $.ajax({
             data=JSON.parse(data);
             console.log(data);
 
-            $("#nama_paket").text(data[0].nama);
+            $("#nama_paket").append(data[0].nama);
             // $("#lokasi").text(data[0].lokasi);
         }
 });
