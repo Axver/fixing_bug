@@ -134,6 +134,7 @@ else
 										<th>Perencanaan</th>
 										<th>View</th>
 										<th>Edit</th>
+										<th>Image</th>
 
 
 									</tr>
@@ -144,6 +145,7 @@ else
 									$this->db->select('*');
 									$this->db->from('lap_pengawasan');
 									$this->db->join('detail_paket', 'lap_pengawasan.id_paket = detail_paket.id_paket');
+									$this->db->join('lap_perencanaan', 'lap_pengawasan.id_lap_perencanaan = lap_perencanaan.id_lap_perencanaan');
 									$this->db->where('detail_paket.nip', $this->session->userdata("nip"));
 
 
@@ -157,9 +159,10 @@ else
                                          <td ><?php echo $i+1; ?></td>
 											<td><?php echo $query[$i]->id_lap_pengawasan; ?></td>
 											<td><?php echo $query[$i]->minggu; ?></td>
-											<td><?php echo $query[$i]->id_lap_perencanaan; ?></td>
+											<td><?php echo $query[$i]->keterangan; ?></td>
 											<td><button class="btn btn-info" onclick="viewLap('<?php echo $query[$i]->id_lap_pengawasan.",".$query[$i]->id_lap_perencanaan.",".$query[$i]->minggu; ?>')">View</button></td>
 											<td><button class="btn btn-warning" onclick="editLap('<?php echo $query[$i]->id_lap_pengawasan.",".$query[$i]->id_lap_perencanaan.",".$query[$i]->minggu; ?>')">Edit</button></td>
+											<td><button class="btn btn-danger" onclick="image('<?php echo $query[$i]->id_lap_pengawasan.",".$query[$i]->id_lap_perencanaan.",".$query[$i]->minggu; ?>')">Upload</button></td>
 										</tr>
 									<?php
 
@@ -250,6 +253,13 @@ else
         let data=id.split(",");
         // alert(id);
         window.location='http://localhost/pupr_new/user_pengawasan_data/edit/'+data[0]+"/"+data[1]+"/"+data[2];
+    }
+
+    function image(id)
+    {
+        let data=id.split(",");
+        // alert(id);
+        window.location='upload/pengawasan/'+data[0]+"/"+data[1]+"/"+data[2];
     }
 </script>
 

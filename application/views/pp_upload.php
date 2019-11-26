@@ -105,7 +105,6 @@ else
 
 
 				<!-- Content Row -->
-
 				<div class="row">
 
 					<!-- Area Chart -->
@@ -113,7 +112,7 @@ else
 						<div class="card shadow mb-12">
 							<!-- Card Header - Dropdown -->
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">Daftar Laporan Harian Dibuat</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Uplaod Gambar Perencanaan</h6>
 								<div class="dropdown no-arrow">
 									<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -124,42 +123,56 @@ else
 							<!-- Card Body -->
 							<div class="card-body">
 
+								<?php echo $error;?>
+								<?php
+								$id=$this->uri->segment("3");
+								$perencanaan=$this->uri->segment("4");
+								$minggu=$this->uri->segment("5");
+								?>
+								<?php echo form_open_multipart('upload/aksi_upload_pengawasan/'.$id.'/'.$perencanaan.'/'.$minggu);?>
+
+								<input type="file" name="berkas" class="btn btn-info"/>
+
+								<br /><br />
+
+								<input type="submit" value="upload" class="btn btn-info"/>
+
+								</form>
+
+								<br/>
+								<br/>
+
+								<b>Daftar Gambar</b>
+
 
 								<table id="example" class="display" style="width:100%">
 									<thead>
 									<tr>
-										<th>Tanggal</th>
-										<th>Paket</th>
-										<th>Perencanaan</th>
-										<th>View</th>
-										<th>Edit</th>
-										<th>Upload</th>
+										<th>Name</th>
+										<th>Gambar</th>
+										<th>Delete</th>
 
 									</tr>
 									</thead>
 									<tbody>
 									<?php
+									//									echo $this->uri->segment("3");
+									$gambar=$this->db->get_where("gambar_pengawasan",array("id_perencanaan"=>$this->uri->segment("4"),"id_pengawasan"=>$this->uri->segment("3"),"minggu"=>$this->uri->segment("5")))->result();
 
-//									var_dump($harian["harian"]);
-
-
-
-									$hitung=count($harian['harian']);
+									$count=count($gambar);
 
 									$i=0;
 
-									while($i<$hitung)
+									while($i<$count)
+
 									{
 										?>
 										<tr>
-											<td><?php echo $harian['harian'][$i]->id_lap_harian_mingguan; ?></td>
-											<td><?php echo $harian['harian'][$i]->paket_nama; ?></td>
-											<td><?php echo $harian['harian'][$i]->keterangan; ?></td>
-											<td><button class="btn btn-info" onclick="view('<?php echo $harian["harian"][$i]->id_lap_harian_mingguan; ?>','<?php echo $harian["harian"][$i]->id_lap_perencanaan; ?>')">View</button></td>
-											<td><button class="btn btn-info" onclick="edit('<?php echo $harian["harian"][$i]->id_lap_harian_mingguan; ?>','<?php echo $harian["harian"][$i]->id_lap_perencanaan; ?>')">Edit</button></td>
-											<td><button class="btn btn-info" onclick="upload('<?php echo $harian["harian"][$i]->id_lap_harian_mingguan; ?>','<?php echo $harian["harian"][$i]->id_lap_perencanaan; ?>')">Image</button></td>
+											<td><?php echo $gambar[$i]->gambar ?></td>
+											<td><img style="width:200px;" src="<?php echo base_url('gambar/'.$gambar[$i]->gambar) ?>"></td>
+											<td><button class="btn btn-danger" onclick="hapus('<?php echo $gambar[$i]->id_perencanaan; ?>','<?php echo $gambar[$i]->gambar; ?>','<?php echo $gambar[$i]->id_pengawasan; ?>','<?php echo $gambar[$i]->minggu; ?>')">Delete</button></td>
 										</tr>
-									<?php
+										<?php
 
 										$i++;
 									}
@@ -168,19 +181,39 @@ else
 								</table>
 
 
-								<script>
-                                    $(document).ready(function() {
-                                        $('#example').DataTable();
-                                    } );
-								</script>
-
 							</div>
+
+
+							<script>
+                                $(document).ready(function() {
+                                    $('#example').DataTable();
+                                } );
+
+                                function hapus(per,gam,peng,ming)
+                                {
+
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://localhost/pupr_new/index.php/upload/hapus2",
+                                        data: {"perencanaan":per,"nama":gam,"pengawasan":peng,"minggu":ming},
+                                        dataType: "text",
+                                        cache:false,
+                                        success:
+                                            function(data){
+                                                location.reload(true);
+                                            }
+                                    });
+                                }
+							</script>
 
 						</div>
 					</div>
 
 
 				</div>
+
+
 
 
 
@@ -231,23 +264,14 @@ else
 </div>
 
 
-
 <script>
-	function view(id,per)
-	{
-      window.location="view_harian/index/"+id+"/"+per;
-	}
+    function lihatData(data)
+    {
 
-	function edit(id,per)
-	{
-        window.location="view_harian/edit/"+id+"/"+per;
-	}
-
-	function upload(id,per)
-	{
-        window.location="upload/index/"+id+"/"+per;
-	}
+        window.location="http://localhost/pupr_new/user/lihat_paket/"+data;
+    }
 </script>
+
 
 
 
