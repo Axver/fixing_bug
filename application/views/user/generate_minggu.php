@@ -30,6 +30,19 @@ else
 	<?php $this->load->view('component/header') ?>
 
 
+	<style>
+		th,tr,td,table{
+			border: 2px solid black;
+			color:black;
+		}
+
+		body{
+			color:black;
+		}
+	</style>
+
+
+
 </head>
 
 <body id="page-top">
@@ -290,11 +303,7 @@ else
 												<div class="col-sm-1">:</div>
 												<div class="col-sm-4" id="progress-fisik-lalu"></div>
 											</div>
-											<div class="row">
-												<div class="col-sm-7">Progress Fisik Minggu</div>
-												<div class="col-sm-1">:</div>
-												<div class="col-sm-4" id="progress-fisik-minggu"></div>
-											</div>
+
 											<div class="row">
 												<div class="col-sm-7">Progress Fisik Selanjutnya</div>
 												<div class="col-sm-1">:</div>
@@ -312,7 +321,7 @@ else
 									<br/>
 
 <!--									Tabelnya-->
-									<table class="tg table table-bordered" id="buat_tabel" style="border: 1px solid black;">
+									<table class="tg table" id="buat_tabel" style="border: 1px solid black;">
 
 <!--
 <!--										<tr>-->
@@ -336,11 +345,11 @@ else
 									</table>
 									<div class="break"></div>
 
-									<table class="tg table table-bordered" id="buat_pekerja">
+									<table class="tg table " id="buat_pekerja">
 									</table>
 									<div class="break"></div>
 
-									<table class="tg table table-bordered" id="buat_alat">
+									<table class="tg table" id="buat_alat">
 
 <!--										<tr>-->
 <!--											<td class="tg-0lax"></td>-->
@@ -529,7 +538,7 @@ else
                     while(i<length)
 					{
 					    //Append Option ke Select
-						$("#id_lap_perencanaan").append('<option value="'+data[i].id_lap_perencanaan+'">'+data[i].id_lap_perencanaan+'</option>');
+						$("#id_lap_perencanaan").append('<option value="'+data[i].id_lap_perencanaan+'">'+data[i].keterangan+'</option>');
                         $("#tahun_hidden").val(data[i].tahun);
 					    i++;
 					}
@@ -1223,6 +1232,10 @@ else
 
 												    z++;
 												}
+
+												console.log("jumlahalattotal");
+                                                console.log(jumlah_alat_total);
+                                                console.log("jumlahalattotal");
 
                                                 let total_all=parseInt(jumlah_pekerja_total)+parseInt(jumlah_tukang_total)+parseInt(jumlah_alat_total);
 

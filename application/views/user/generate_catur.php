@@ -28,9 +28,18 @@ else
 <head>
 
 	<?php $this->load->view('component/header') ?>
-	<style>
 
+	<style>
+		th,tr,td,table{
+			border: 2px solid black;
+			color:black;
+		}
+
+		body{
+			color:black;
+		}
 	</style>
+
 
 
 </head>
@@ -151,19 +160,14 @@ else
 								</select>
 								<b>Laporan Perencanaan</b>
 								<select id="lap_perencanaan" class="form form-control"></select>
-								<b>Pilih Bulan Mulai</b>
+								<b>Pilih Caturwulan</b>
 								<select id="bulan_mulai" class="form form-control">
-									<?php
-									  $i=1;
 
-									  while($i<=12)
-									  {
-									  	?>
-                                      <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-									<?php
-										  $i++;
-									  }
-									?>
+                                      <option value="1">Caturwulan 1</option>
+									<option value="5">Caturwulan 2</option>
+									<option value="9">Caturwulan 3</option>
+
+
 								</select>
 
 								<button class="btn btn-info" onclick="buatTabel()">Generate</button>
@@ -179,7 +183,7 @@ else
 									while($i<$count)
 									{
 										?>
-										<option value="<?php echo $diperiksa[$i]->nama; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
+										<option value="<?php echo $diperiksa[$i]->id_konfigurasi; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
 										<?php
 
 										$i++;
@@ -241,7 +245,7 @@ else
 									 <br/>
 
 									 <!--								Tabelnya-->
-									 <table class="tg table table-bordered" id="tabel_satu">
+									 <table class="tg table" id="tabel_satu">
 										 <!--									<tr>-->
 										 <!--										<th class="tg-cly1" rowspan="3">Jenis Pekerjaan</th>-->
 										 <!--										<th class="tg-nrix" colspan="15">Tahap/Bulan/Minggu</th>-->
@@ -290,7 +294,7 @@ else
 
 									 <div class="break"></div>
 
-									 <table class="tg table table-bordered" id="tabel_dua">
+									 <table class="tg table " id="tabel_dua">
 										 <!--									<tr>-->
 										 <!--										<th class="tg-cly1" rowspan="3">Jenis Pekerjaan</th>-->
 										 <!--										<th class="tg-nrix" colspan="15">Tahap/Bulan/Minggu</th>-->
@@ -337,7 +341,7 @@ else
 										 <!--									</tr>-->
 									 </table>
 									 <div class="break"></div>
-									 <table class="tg table table-bordered" id="tabel_tiga">
+									 <table class="table" id="tabel_tiga">
 									 </table>
 
 
@@ -345,12 +349,37 @@ else
 									 <br/>
 									 <br/>
 									 <br/>
+									 <?php
+									 function tgl_indo($tanggal){
+										 $bulan = array (
+											 1 =>   'Januari',
+											 'Februari',
+											 'Maret',
+											 'April',
+											 'Mei',
+											 'Juni',
+											 'Juli',
+											 'Agustus',
+											 'September',
+											 'Oktober',
+											 'November',
+											 'Desember'
+										 );
+										 $pecahkan = explode('-', $tanggal);
+
+										 // variabel pecahkan 0 = tanggal
+										 // variabel pecahkan 1 = bulan
+										 // variabel pecahkan 2 = tahun
+
+										 return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+									 }
+									 ?>
 
 									 <div class="row">
 										 <div class="col-sm-1"></div>
 										 <div class="col-sm-3"><center><b>Diperiksa Oleh</b></center></div>
 										 <div class="col-sm-4"></div>
-										 <div class="col-sm-3"><center><b>Dibuat Oleh</b></center></div>
+										 <div class="col-sm-3"><center><b>Jambi,<?php echo tgl_indo(date('Y-m-d')); ?></b><br/><b>Dibuat Oleh</b></center></div>
 										 <div class="col-sm-1"></div>
 									 </div>
 
@@ -359,7 +388,7 @@ else
 									 <br/>
 									 <div class="row">
 										 <div class="col-sm-1"></div>
-										 <div class="col-sm-3"><center><b id="diperiksa"></b></center></div>
+										 <div class="col-sm-3"><center><u><b id="diperiksa"> </b></u><br/><b id="nip_dip"></b></center></div>
 										 <div class="col-sm-4"></div>
 										 <div class="col-sm-3"><center><b id="dibuat"><?php
 													 $data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
@@ -368,7 +397,9 @@ else
 
 													 while($i<$count)
 													 {
-														 echo $data[$i]->nama;
+														 echo "<u>".$data[$i]->nama."</u>";
+														 echo "<br/>";
+														 echo $data[$i]->nip;
 
 														 $i++;
 													 }
@@ -386,6 +417,38 @@ else
 
 									function generateTable()
 									{
+									    // alert("haha");
+                                        let diperiksa_=$("#diperiksa_oleh").val();
+                                        // alert(diperiksa_);
+										// alert(diperiksa_);
+                                        //konf_kerja data
+                                        $.ajax({
+                                            type: "POST",
+                                            async:false,
+                                            url: "http://localhost/pupr_new/generate_minggu/bidang",
+                                            data: {"id_konfigurasi":diperiksa_},
+                                            dataType: "text",
+                                            cache:false,
+                                            success:
+                                                function(data){
+                                                    data=JSON.parse(data);
+                                                    let length=data.length;
+                                                    let i=0;
+
+                                                    console.log("Hmmmmmm");
+                                                    console.log(data);
+                                                    console.log("Hmmmmmm");
+                                                    // alert(data);
+
+                                                    while(i<length)
+                                                    {
+                                                        $("#konf_kerja").text(data[i].jabatan);
+                                                        $("#nip_dip").text(data[i].nip);
+
+                                                        i++;
+                                                    }
+                                                }
+                                        });
 									    // alert("test");
 									    $("#caturwulan").append('<tr id="bulan">\n' +
                                             '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1" colspan="21"><center>Bulan</center></td>\n' +
@@ -612,7 +675,7 @@ else
 
 					while(i<length)
 					{
-                        $("#lap_perencanaan").append('<option value="'+data[i].id_lap_perencanaan+'">'+data[i].id_lap_perencanaan+'<option>');
+                        $("#lap_perencanaan").append('<option value="'+data[i].id_lap_perencanaan+'">'+data[i].keterangan+'<option>');
 					    i++;
 					}
                 }
@@ -622,9 +685,44 @@ else
 
 	function buatTabel()
 	{
+	    //Disini
+		// alert("test");
+        let diperiksa_=$("#diperiksa_oleh").val();
+
+        // alert(diperiksa_);
+        // alert(diperiksa_);
+        // alert(diperiksa_);
+        //konf_kerja data
+        $.ajax({
+            type: "POST",
+            async:false,
+            url: "http://localhost/pupr_new/generate_minggu/bidang",
+            data: {"id_konfigurasi":diperiksa_},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    data=JSON.parse(data);
+                    let length=data.length;
+                    let i=0;
+
+                    console.log("Hmmmmmm");
+                    console.log(data);
+                    console.log("Hmmmmmm");
+                    // alert(data);
+
+                    while(i<length)
+                    {
+                        $("#konf_kerja").text(data[i].jabatan);
+                        $("#nip_dip").text(data[i].nip);
+
+                        i++;
+                    }
+                }
+        });
 	    let pagu=$("#pagu").val();
 	    $("#pagu_text").text(pagu);
-        let diperiksa=$("#diperiksa_oleh").val();
+        let diperiksa=$("#diperiksa_oleh option:selected").text();
         $("#diperiksa").text(diperiksa);
         let nama_paket=$("#id_paket option:selected").text();
         $("#nama_paket_1").text(nama_paket);
