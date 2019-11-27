@@ -39,10 +39,11 @@ else
 		}
 
 		.table {
-			width: 140%;
+			width: 100%;
 			-webkit-overflow-scrolling: touch;
 			overflow-x: auto;
 			display: block;
+			table-layout: fixed;
 
 		}
 
@@ -55,6 +56,11 @@ else
 			border-style: solid;
 			border-width: 5px;
 		}
+		#tabel_sketsa{
+			border: 1px solid black;
+  table-layout: fixed;
+  width: 92%;
+		}
 
 		#border{
 			border-style: solid;
@@ -63,7 +69,7 @@ else
 
 		body{
 			/*background-color:#add8e6;  */
-			margin:50px;
+			margin:40px;
 			color: black;
 			font-size: 13px;
 		}
@@ -144,6 +150,7 @@ else
 			height: 100px;
 			outline: 1px solid;
 			float: left;
+			white-space:nowrap;
 
 		}
 
@@ -152,9 +159,11 @@ else
 			height: 100px;
 			outline: 1px solid;
 			float: left;
+			white-space:nowrap;
 		}
 		th,td,tr {
 			text-align:center;
+			white-space:nowrap;
 		}
 
 
@@ -596,15 +605,15 @@ else
 				<br/>
 				<br/>
 
-				<div class="row">
-					<table class="table table-striped" class="col-sm-10" cellspacing="0" border="0">
+				<div >
+					<table id="tabel_sketsa"class="table" cellspacing="0" border="0">
 						<thead style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">
-						<th style="colspan=3 border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Sketsa Kerja</th>
+						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Sketsa Kerja</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Lokasi</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Jenis Pekerjaan</th>
-						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Panjang Penanganan</th>
+						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000 width: 50%">Panjang Penanganan</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Keterangan Dimensi</th>
-						<th style="colspan=3 border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Ket</th>
+						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Ket</th>
 						</thead>
 						<tbody>
 						<tr style="height:300px;">
