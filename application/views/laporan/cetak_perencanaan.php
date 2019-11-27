@@ -65,7 +65,7 @@ else
 			/*background-color:#add8e6;  */
 			margin:50px;
 			color: black;
-			font-size: 10px;
+			font-size: 13px;
 		}
 		.contain{
 			margin-left:auto;
@@ -182,7 +182,7 @@ else
 
 
 	<b>
-		<center><h2>LAPORAN PELAKSANAAN KEGIATAN</h2></center>
+		<center><h2>LAPORAN PERENCANAAN PELAKSANAAN KEGIATAN</h2></center>
 
 	</b>
 	<?php
@@ -284,11 +284,11 @@ else
 
 				<!--	Irregular Table-->
 				<b>Jadwal Rencana Pelaksanaan Kegiatan</b>
-				<table id="tabel_jadwal" width="400" class="table " style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" cellspacing="0" border="0">
+				<table id="tabel_jadwal" width="400" class="table " style="border-top: 0px solid #000000; border-bottom: 0px solid #000000; border-left: 1px solid #000000; border-right: 0px solid #000000" cellspacing="0" border="0">
 
 					<tr>
-						<td cellspacing="'0'" colspan="2" rowspan="4" height="80" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Jenis Pekerjaan</font></td>
-						<td cellspacing="'0'"  colspan="60" ><font >Tahap/Bulan/Minggu</font></td>
+						<td cellspacing="'0'" colspan="1" rowspan="4" height="80" style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Jenis Pekerjaan</font></td>
+						<td cellspacing="'0'"  colspan="60" style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"><font >Tahap/Bulan/Minggu</font></td>
 
 					</tr>
 					<tr>
@@ -382,10 +382,10 @@ else
 				</table>
 				<div class="break"></div>
 				<b>Perencanaan Penggunaan Jumlah Pekerja </b>
-				<table id="tabel_jumlah"  class="table table-responsive" cellspacing="0" border="0">
+				<table id="tabel_jumlah"  class="table " cellspacing="0" border="0">
 
 					<tr>
-						<td cellspacing="'0'"  colspan="2" rowspan="4" height="80" align="center" valign="middle" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"><font >Jenis Pekerjaan</font></td>
+						<td cellspacing="'0'"  colspan="0" rowspan="4" height="80" align="center" valign="middle" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"><font >Jenis Pekerjaan</font></td>
 						<td cellspacing="'0'"  colspan="60" style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"><font >Tahap/Bulan/Minggu</font></td>
 
 					</tr>
@@ -491,7 +491,7 @@ else
 				<table id="tabel_alat" class="table table-striped" cellspacing="0" border="0">
 
 					<tr>
-						<td style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" colspan="6" rowspan="4" height="80" align="center" valign="middle"><font face="Comic Sans MS" color="#000000">Jenis Bahan/Alat</font></td>
+						<td style="border-top: 2px solid #000000; border-bottom: 2px solid #000000; border-left: 2px solid #000000; border-right: 1px solid #000000" colspan="3" rowspan="4" height="80" align="center" valign="middle"><font face="Comic Sans MS" color="#000000">Jenis Bahan/Alat</font></td>
 						<td style="border-top: 2px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" colspan="60" align="center" valign="bottom"><font face="Comic Sans MS" color="#000000">Tahap/Bulan/Minggu</font></td>
 
 					</tr>
@@ -577,16 +577,7 @@ else
 						<td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign="bottom" sdval="3" sdnum="1033;"><font face="Comic Sans MS" color="#000000">3</font></td>
 						<td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000" align="center" valign="bottom" sdval="4" sdnum="1033;"><font face="Comic Sans MS" color="#000000">4</font></td>
 						<td style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 2px solid #000000" align="center" valign="bottom" sdval="5" sdnum="1033;"><font face="Comic Sans MS" color="#000000">5</font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
-						<td align="left" valign="bottom"><font face="Comic Sans MS" color="#000000"><br></font></td>
+						
 					</tr>
 
 
@@ -606,14 +597,14 @@ else
 				<br/>
 
 				<div class="row">
-					<table class="table table-bordered">
+					<table class="table table-striped" class="col-sm-10" cellspacing="0" border="0">
 						<thead style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">
-						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Sketsa Kerja</th>
+						<th style="colspan=3 border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Sketsa Kerja</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Lokasi</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Jenis Pekerjaan</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Panjang Penanganan</th>
 						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Keterangan Dimensi</th>
-						<th style="border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Ket</th>
+						<th style="colspan=3 border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000">Ket</th>
 						</thead>
 						<tbody>
 						<tr style="height:300px;">
@@ -847,12 +838,12 @@ else
             $("#tabel_jadwal").append(newRow);
 
             var newRow="\t<tr id='pekerjaan_waktu"+pekerjaan_id+"'>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"align=\"center\" valign=\"bottom\"></td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+pekerjaan_text+"</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"align=\"left\" valign=\"bottom\"></td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"align=\"center\" valign=\"bottom\"></td>\n" +
                 "\n" +
                 "\n" +
                 "\t\t\t\t\t\t\t\t\t</tr>";
@@ -982,8 +973,6 @@ else
                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+alat_bahan_text+"</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"align=\"left\" valign=\"bottom\"></td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"center\" valign=\"bottom\"></td>\n" +
                 "\n" +
                 "\n" +
@@ -1150,7 +1139,6 @@ else
 
                         var newRow="\t<tr  id='"+data1[x].id+pekerjaan_id+"'>\n" +
                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\">"+pekerjaan_text+"</td>\n" +
-                            "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"></td>\n" +
                             "\n" +
                             "\n" +
                             "\t\t\t\t\t\t\t\t\t</tr>";
@@ -1159,7 +1147,6 @@ else
 
                         var newRow="\t<tr id='pekerjaan_waktu"+pekerjaan_id+"'>\n" +
                             "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\">"+pekerjaan_text+"</td>\n" +
-                            "\t\t\t\t\t\t\t\t\t\t<td cellspacing='0' style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\"></td>\n" +
                             "\n" +
                             "\n" +
                             "\t\t\t\t\t\t\t\t\t</tr>";
@@ -1261,12 +1248,8 @@ else
                         if($("#pekerjaan_waktu_" +data[i].id_jenis_bahan_alat).length == 0) {
 
                             var newRowX="\t<tr id='pekerjaan_waktu_"+data[i].id_jenis_bahan_alat+"'>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000; border-left: 2px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+data[i].jenis_bahan_alat+"</td>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"center\" valign=\"bottom\"></td>\n" +
+                                "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000; border-left: 2px solid #000000\" height=\"20\" colspan=\"3\" align=\"left\" valign=\"bottom\">"+data[i].jenis_bahan_alat+"</td>\n" +
+                                
                                 "\n" +
                                 "\n" +
                                 "\t\t\t\t\t\t\t\t\t</tr>";
