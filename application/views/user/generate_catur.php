@@ -171,6 +171,7 @@ else
 								</select>
 
 								<button class="btn btn-info" onclick="buatTabel()">Generate</button>
+								<button onclick="prediksi()" class="btn btn-info">Progres</button>
 								<br/>
 								<b>Diperiksa Oleh</b>
 								<select class="form form-control" id="diperiksa_oleh">
@@ -194,12 +195,15 @@ else
 								<br/>
 								<b>Pagu:</b>
 								<input type="text" class="form form-control" id="pagu">
+								<b>Progress Selanjutnya</b>
+								<input type="text" class="form form-control" id="selanjutnya">
 
 <!--								<button class="btn btn-info" onclick="addRow()">Add Row</button>-->
 								<br/>
 								<br/>
 								<br/>
                               <button style="width: 100%;" class="btn btn-success" onclick="generatePDF()">Generate PDF</button>
+
 				                 <div id="cetak_tabel">
 									 <center><b><h2>LAPORAN CATURWULAN</h2></b></center>
 
@@ -247,27 +251,23 @@ else
 											 <div class="row">
 												 <div class="col-sm-7">Progres Pekerjaan</div>
 												 <div class="col-sm-1">:</div>
-												 <div class="col-sm-4"></div>
+												 <div class="col-sm-4" id="progres_pekerjaan"></div>
 											 </div>
 											 <div class="row">
 												 <div class="col-sm-7">Progres Fisik Periode Lalu</div>
 												 <div class="col-sm-1">:</div>
-												 <div class="col-sm-4"></div>
+												 <div class="col-sm-4" id="progres_sebelumnya"></div>
 											 </div>
-											 <div class="row">
-												 <div class="col-sm-7">Progres Fisik</div>
-												 <div class="col-sm-1">:</div>
-												 <div class="col-sm-4"></div>
-											 </div>
+
 											 <div class="row">
 												 <div class="col-sm-7">Progres Fisik Selanjutnya</div>
 												 <div class="col-sm-1">:</div>
-												 <div class="col-sm-4"></div>
+												 <div class="col-sm-4" id="progres_selanjutnya"></div>
 											 </div>
 											 <div class="row">
 												 <div class="col-sm-7">Progres Fisik Total</div>
 												 <div class="col-sm-1">:</div>
-												 <div class="col-sm-4"></div>
+												 <div class="col-sm-4" id="progres_total"></div>
 											 </div>
 										 </div>
 									 </div>
@@ -665,6 +665,35 @@ else
 
 
 <script>
+    function prediksi()
+    {
+        //Progress Total
+        let total_sekarang=$("#progres_pekerjaan").text();
+        let total_lalu=$("#progres_sebelumnya").text();
+
+        total_sekarang=total_sekarang.substring(0, total_sekarang.length - 1);
+        total_lalu=total_lalu.substring(0, total_lalu.length - 1);
+
+        if(total_sekarang=="NaN")
+		{
+		    total_sekarang=0;
+		}
+
+        if(total_lalu=="NaN")
+        {
+            total_lalu=0;
+        }
+
+
+        let total=parseInt(total_sekarang)+parseInt(total_lalu);
+
+        $("#progres_total").text(total+"%");
+
+
+        //    Progress Selanjutnya bulanan
+        selanjutnya=$("#selanjutnya").val();
+        $("#progres_selanjutnya").text(selanjutnya+"%");
+    }
     function generatePDF() {
         // Choose the element that our invoice is rendered in.
         const element = document.getElementById("cetak_tabel");
@@ -1723,6 +1752,7 @@ else
         let laper_info=$("#lap_perencanaan").val();
         $.ajax({
             type: "POST",
+			async:false,
             url: "http://localhost/pupr_new/generate_minggu/info",
             data: {"id_laper":laper_info},
             dataType: "text",
@@ -1738,6 +1768,320 @@ else
                         $("#lokasi_jesi").text(":"+data[i].lokasi);
                         i++;
                     }
+                }
+        });
+
+
+    //    Disini Untuk Progress
+        let id_paketp=$("#id_paket").val();
+        let laperp=$("#lap_perencanaan").val();
+        let bulanp=$("#bulan_mulai").val();
+
+
+        //Untuk mengisi Progress
+        $.ajax({
+            type: "POST",
+            url: "http://localhost/pupr_new/generate_bulan/progres11",
+            async:false,
+            data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    // alert(data);  //as a debugging message.
+                    // alert(data);
+                    data=JSON.parse(data);
+                    let jum_per=0;
+                    let length=data.length;
+                    let i=0;
+
+                    while(i<length)
+                    {
+                        jum_per=data[i].count;
+
+                        i++;
+                    }
+
+                    jum_per=parseInt(jum_per)*80000;
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost/pupr_new/generate_bulan/progres22",
+                        data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                        dataType: "text",
+                        cache:false,
+                        success:
+                            function(data){
+                                // alert(data);  //as a debugging message.
+                                // alert(data);
+                                data=JSON.parse(data);
+
+
+                                let jum_tuk=0;
+                                let length=data.length;
+                                let i=0;
+
+                                while(i<length)
+                                {
+                                    jum_tuk=data[i].count;
+
+                                    i++;
+                                }
+
+                                jum_tuk=parseInt(jum_tuk)*90000;
+
+
+
+
+                                //    Selanjutnya alat dan bahan
+
+                                $.ajax({
+                                    type: "POST",
+                                    async:false,
+                                    url: "http://localhost/pupr_new/generate_bulan/progres33",
+                                    data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                                    dataType: "text",
+                                    cache:false,
+                                    success:
+                                        function(data){
+                                            // alert(data);  //as a debugging message.
+                                            // alert(data);
+                                            data=JSON.parse(data);
+
+
+                                            let jum_al=0;
+                                            let length=data.length;
+                                            let i=0;
+
+                                            // let jumjum=0;
+
+                                            while(i<length)
+                                            {
+                                                jum_al=parseInt(jum_al)+(parseInt(data[i].count)*parseInt(data[i].harga));
+
+
+                                                i++;
+                                            }
+
+
+
+
+
+                                            //    Selanjutnya alat dan bahan
+
+                                            //   Nilai Paketnya
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "http://localhost/pupr_new/generate_bulan/progres4",
+                                                async:false,
+                                                data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                                                dataType: "text",
+                                                cache:false,
+                                                success:
+                                                    function(data){
+                                                        // alert(data);  //as a debugging message.
+                                                        // alert(data);
+                                                        data=JSON.parse(data);
+
+
+                                                        let nilai_paket=0;
+                                                        let length=data.length;
+                                                        let i=0;
+
+                                                        // let jumjum=0;
+
+                                                        while(i<length)
+                                                        {
+                                                            nilai_paket=data[i].nilai_paket;
+
+
+                                                            i++;
+                                                        }
+
+                                                        nilai_paket=parseInt(nilai_paket);
+
+                                                        // jum_tuk=parseInt(jum_tuk)*90000;
+
+                                                        console.log("------");
+                                                        console.log(jum_per);
+                                                        console.log(jum_tuk);
+                                                        console.log(jum_al);
+                                                        console.log(nilai_paket);
+                                                        console.log("------");
+
+                                                        let hasil_akhir=(jum_al+jum_tuk+jum_per)/nilai_paket;
+                                                        hasil_akhir=hasil_akhir*100;
+
+                                                        $("#progres_pekerjaan").text(hasil_akhir+"%");
+
+
+
+
+
+                                                    }
+                                            });
+
+                                        }
+                                });
+
+                            }
+                    });
+                }
+        });
+
+
+        //Untuk mengisi Progress Sebelumnya
+        $.ajax({
+            type: "POST",
+            url: "http://localhost/pupr_new/generate_bulan/progres111",
+            async:false,
+            data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    // alert(data);  //as a debugging message.
+                    // alert(data);
+                    data=JSON.parse(data);
+                    let jum_per=0;
+                    let length=data.length;
+                    let i=0;
+
+                    while(i<length)
+                    {
+                        jum_per=data[i].count;
+
+                        i++;
+                    }
+
+                    jum_per=parseInt(jum_per)*80000;
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost/pupr_new/generate_bulan/progres222",
+                        data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                        dataType: "text",
+                        cache:false,
+                        success:
+                            function(data){
+                                // alert(data);  //as a debugging message.
+                                // alert(data);
+                                data=JSON.parse(data);
+
+
+                                let jum_tuk=0;
+                                let length=data.length;
+                                let i=0;
+
+                                while(i<length)
+                                {
+                                    jum_tuk=data[i].count;
+
+                                    i++;
+                                }
+
+                                jum_tuk=parseInt(jum_tuk)*90000;
+
+
+
+
+                                //    Selanjutnya alat dan bahan
+
+                                $.ajax({
+                                    type: "POST",
+                                    async:false,
+                                    url: "http://localhost/pupr_new/generate_bulan/progres333",
+                                    data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                                    dataType: "text",
+                                    cache:false,
+                                    success:
+                                        function(data){
+                                            // alert(data);  //as a debugging message.
+                                            // alert(data);
+                                            data=JSON.parse(data);
+
+
+                                            let jum_al=0;
+                                            let length=data.length;
+                                            let i=0;
+
+                                            // let jumjum=0;
+
+                                            while(i<length)
+                                            {
+                                                jum_al=parseInt(jum_al)+(parseInt(data[i].count)*parseInt(data[i].harga));
+
+
+                                                i++;
+                                            }
+
+
+
+
+
+                                            //    Selanjutnya alat dan bahan
+
+                                            //   Nilai Paketnya
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "http://localhost/pupr_new/generate_bulan/progres4",
+                                                async:false,
+                                                data: {"id_paket":id_paketp,"perencanaan":laperp,"bulan":bulanp},
+                                                dataType: "text",
+                                                cache:false,
+                                                success:
+                                                    function(data){
+                                                        // alert(data);  //as a debugging message.
+                                                        // alert(data);
+                                                        data=JSON.parse(data);
+
+
+                                                        let nilai_paket=0;
+                                                        let length=data.length;
+                                                        let i=0;
+
+                                                        // let jumjum=0;
+
+                                                        while(i<length)
+                                                        {
+                                                            nilai_paket=data[i].nilai_paket;
+
+
+                                                            i++;
+                                                        }
+
+                                                        nilai_paket=parseInt(nilai_paket);
+
+                                                        // jum_tuk=parseInt(jum_tuk)*90000;
+
+                                                        console.log("------");
+                                                        console.log(jum_per);
+                                                        console.log(jum_tuk);
+                                                        console.log(jum_al);
+                                                        console.log(nilai_paket);
+                                                        console.log("------");
+
+                                                        let hasil_akhir=(jum_al+jum_tuk+jum_per)/nilai_paket;
+                                                        hasil_akhir=hasil_akhir*100;
+
+                                                        $("#progres_sebelumnya").text(hasil_akhir+"%");
+
+
+
+
+
+                                                    }
+                                            });
+
+                                        }
+                                });
+
+                            }
+                    });
                 }
         });
 
