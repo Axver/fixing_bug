@@ -34,13 +34,41 @@ class User extends CI_Controller {
 		$id_paket=$this->input->post("id_paket");
 
 		$query=$this->db->get_where("paket",array("id_paket"=>$id_paket))->result();
+
+//		Kemudian pilih id paketnya dari id perencanaan tersebut
 		echo json_encode($query);
+	}
+
+	public function detail_paket1()
+	{
+		$id_paket=$this->input->post("id_paket");
+
+		$query=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$id_paket))->result();
+
+		$count=count($query);
+		$i=0;
+
+		while($i<$count)
+		{
+			$id_paket_baru=$this->db->get_where("paket",array("id_paket"=>$query[$i]->id_paket))->result();
+
+			$i++;
+		}
+
+//		Kemudian pilih id paketnya dari id perencanaan tersebut
+
+		echo json_encode($id_paket_baru);
 	}
 
 
 	public function user_harian($i)
 	{
         $this->load->view("user/harian");
+	}
+
+	public function user_harian_baru($i)
+	{
+		$this->load->view("user/harian_baru");
 	}
 
 
@@ -738,6 +766,137 @@ public function pekerjaan()
 
 		var_dump($data);
 	}
+
+
+
+	public function baru_harian()
+	{
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$id_harian=$this->input->post("id_harian");
+
+//		Select tahun dulu
+		$tahun=$this->db->get_where("paket",array("id_paket"=>$id_paket))->result();
+		$count=count($tahun);
+		$i=0;
+
+
+		$tahun1=0;
+		while($i<$count)
+		{
+
+			$tahun1=$tahun[$i]->tahun;
+
+			$i++;
+		}
+
+
+		$data=array(
+		"id_lap_harian_mingguan"=>$id_harian,
+		"id_lap_perencanaan"=>$id_perencanaan,
+			"id_paket"=>$id_paket,
+			"tahun"=>$tahun1,
+			"hari_tanggal"=>$id_harian
+		);
+
+//		Inputkan data
+		$this->db->insert("lap_harian_mingguan",$data);
+//		var_dump($data);
+	}
+
+
+	public function baru_pekerjaan()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$id_harian=$this->input->post("id_harian");
+
+//		Select tahun dulu
+		$tahun=$this->db->get_where("paket",array("id_paket"=>$id_paket))->result();
+		$count=count($tahun);
+		$i=0;
+
+
+		$tahun1=0;
+		while($i<$count)
+		{
+
+			$tahun1=$tahun[$i]->tahun;
+
+			$i++;
+		}
+
+		$id_upah=$this->input->post("id_upah");
+		$hari=$this->input->post("hari");
+		$jenis_pekerjaan=$this->input->post("jenis_pekerjaan");
+		$total=$this->input->post("total");
+
+
+		$data=array(
+              "id_lap_harian_mingguan"=>$id_harian,
+			"id_lap_perencanaan"=>$id_perencanaan,
+			"id_paket"=>$id_paket,
+			"tahun"=>$tahun1,
+			"id_jenis_upah"=>$id_upah,
+			"hari"=>$hari,
+			"jenis_pekerjaan"=>$jenis_pekerjaan,
+			"total"=>$total
+		);
+
+//		var_dump($data);
+
+		$this->db->insert("detail_bahan_alat_harian",$data);
+
+	}
+
+
+
+	public function baru_alat()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$id_harian=$this->input->post("id_harian");
+
+//		Select tahun dulu
+		$tahun=$this->db->get_where("paket",array("id_paket"=>$id_paket))->result();
+		$count=count($tahun);
+		$i=0;
+
+
+		$tahun1=0;
+		while($i<$count)
+		{
+
+			$tahun1=$tahun[$i]->tahun;
+
+			$i++;
+		}
+
+		$id_satuan=$this->input->post("id_satuan");
+		$hari=$this->input->post("hari");
+		$jenis_bahan_alat=$this->input->post("jenis_bahan_alat");
+		$total=$this->input->post("total");
+
+
+		$data=array(
+			"id_lap_harian_mingguan"=>$id_harian,
+			"id_lap_perencanaan"=>$id_perencanaan,
+			"id_paket"=>$id_paket,
+			"tahun"=>$tahun1,
+			"id_jenis_bahan_alat"=>$jenis_bahan_alat,
+			"hari"=>$hari,
+			"id_satuan"=>$id_satuan,
+			"jumlah"=>$total
+		);
+
+//		var_dump($data);
+
+		$this->db->insert("detail_alat_harian",$data);
+
+	}
+
 
 
 

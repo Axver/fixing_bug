@@ -865,6 +865,8 @@ else
 	</div>
 </div>
 
+
+
 <script>
     let save_pekerjaan= new Array();
 
@@ -922,12 +924,20 @@ else
     function warnai(id)
     {
         let col_id=$("#"+id);
+        let id2='';
+        id2=id.replace("_","__");
+
+        // alert(id2);
+        let col_id2=$("#"+id2);
         let class_=col_id.attr('class');
         if(class_=="nonActive")
         {
             col_id.css("background-color","yellow");
+            // $("#"+id2).text(' ');
             col_id.removeClass("nonActive");
             col_id.addClass("Active");
+            col_id2.removeClass("nonActive1");
+            col_id2.addClass("Active1");
             $("#id_column").val(id);
             $('#modalWaktu').modal('show');
 
@@ -935,10 +945,14 @@ else
         }
         else
         {
+            $("#"+id2).text(' ');
+            // alert(id2);
             col_id.css("background-color","white");
             col_id.removeClass("Active");
             col_id.addClass("nonActive");
-            removeValue(col_id);
+            col_id2.removeClass("Active1");
+            col_id2.addClass("nonActive1");
+            // removeValue(col_id);
         }
 
     }
@@ -955,17 +969,17 @@ else
         console.log(col_id);
         console.log($("#"+col_id).attr('class'));
         let data_class=$("#"+col_id).attr('class');
-
-        if(data_class=="nonActive1")
-        {
-            $("#"+col_id).removeClass("nonActive1");
-            $("#"+col_id).addClass("Active1");
-        }
-        else
-        {
-            $("#"+col_id).removeClass("Active1");
-            $("#"+col_id).addClass("nonActive1");
-        }
+		//
+        // if(data_class=="nonActive1")
+        // {
+        //     $("#"+col_id).removeClass("nonActive1");
+        //     $("#"+col_id).addClass("Active1");
+        // }
+        // else
+        // {
+        //     $("#"+col_id).removeClass("Active1");
+        //     $("#"+col_id).addClass("nonActive1");
+        // }
 
 
     }
@@ -1084,6 +1098,7 @@ else
         let i=0;
         let dataArray=new Array();
         let dataArray1=new Array();
+        //let id_paket=<?php //echo $this->uri->segment('3') ?>
 
         $(".Active").each(function (index, element) {
 
@@ -1250,13 +1265,15 @@ else
 
     $.ajax({
         type: "POST",
-        url: "http://localhost/pupr_new/user/detail_paket/",
+        url: "http://localhost/pupr_new/user/detail_paket1/",
         data: {"id_paket":uri_nya},
         dataType: "text",
         cache:false,
         success:
             function(data){
+            // alert(data);
                 data=JSON.parse(data);
+
                 console.log(data);
 
                 $("#nama_paket").val(data[0].id_paket+"_"+data[0].tahun);
@@ -1368,6 +1385,24 @@ else
                         "\n" +
                         "\t\t\t\t\t\t\t\t\t</tr>";
                     $("#tabel_jumlah").append(newRow);
+
+                    let y=1;
+
+                    while(y<=60)
+                    {
+                        var data_=pekerjaan_id+"_"+y;
+                        console.log(data_);
+                        var data2=pekerjaan_id+"__"+y;
+                        data_=data_.toString();
+                        // data1=data1.toString();
+                        // console.log(data);
+                        let newCol="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai('"+data_+"')\" id='"+data_+"' class='nonActive'></td>";
+                        var newCol1="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai1('"+data2+"')\" id='"+data2+"' class='nonActive1'></td>";
+                        $("#"+data1[x].id+pekerjaan_id).append(newCol);
+                        $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
+                        // $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
+                        y++;
+                    }
                 }
 
 
@@ -1376,23 +1411,7 @@ else
 
 
 
-                let y=1;
 
-                while(y<=60)
-                {
-                    var data_=pekerjaan_id+"_"+y;
-                    console.log(data_);
-                    var data2=pekerjaan_id+"__"+y;
-                    data_=data_.toString();
-                    // data1=data1.toString();
-                    // console.log(data);
-                    let newCol="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai('"+data_+"')\" id='"+data_+"' class='nonActive'></td>";
-                    var newCol1="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"warnai1('"+data2+"')\" id='"+data2+"' class='nonActive1'></td>";
-                    $("#"+data1[x].id+pekerjaan_id).append(newCol);
-                    $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
-                    // $("#pekerjaan_waktu"+pekerjaan_id).append(newCol1);
-                    y++;
-                }
 
 
                 x++;
@@ -1462,36 +1481,39 @@ $.ajax({
 			let i=0;
 			while(i<length)
 			{
-                var newRowX="\t<tr id='pekerjaan_waktu_"+data[i].id_jenis_bahan_alat+"'>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000; border-left: 2px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+data[i].jenis_bahan_alat+"</td>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
-                    "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"center\" valign=\"bottom\"></td>\n" +
-                    "\n" +
-                    "\n" +
-                    "\t\t\t\t\t\t\t\t\t</tr>";
-                $("#tabel_alat").append(newRowX);
-                let x=1;
-                while(x<=60)
-                {
-                    let data_=data[i].id_jenis_bahan_alat+"___"+x;
+                if($("#" +data1[x].id+pekerjaan_id).length == 0) {
+                    var newRowX="\t<tr id='pekerjaan_waktu_"+data[i].id_jenis_bahan_alat+"'>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000; border-left: 2px solid #000000\" height=\"20\" align=\"left\" valign=\"bottom\">"+data[i].jenis_bahan_alat+"</td>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"left\" valign=\"bottom\"></td>\n" +
+                        "\t\t\t\t\t\t\t\t\t\t<td style=\"border-bottom: 2px solid #000000\" align=\"center\" valign=\"bottom\"></td>\n" +
+                        "\n" +
+                        "\n" +
+                        "\t\t\t\t\t\t\t\t\t</tr>";
+                    $("#tabel_alat").append(newRowX);
+                    let x=1;
+                    while(x<=60)
+                    {
+                        let data_=data[i].id_jenis_bahan_alat+"___"+x;
 
 
 
-                    data_=data_.toString();
+                        data_=data_.toString();
 
 
-                    var newColX="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"tambahAngka('"+data_+"')\" id='"+data_+"' class='nonActive2'></td>";
-                    $("#pekerjaan_waktu_"+data[i].id_jenis_bahan_alat).append(newColX);
-                    x++;
+                        var newColX="<td style=\"border-top: 1px solid #000000; border-bottom: 2px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000\" align=\"left\" valign=\"bottom\" onclick=\"tambahAngka('"+data_+"')\" id='"+data_+"' class='nonActive2'></td>";
+                        $("#pekerjaan_waktu_"+data[i].id_jenis_bahan_alat).append(newColX);
+                        x++;
+                    }
+
+                    // alert(data[i].id_jenis_bahan_alat+"___"+data[i].minggu);
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).text(data[i].jumlah+"_"+data[i].id_satuan+"_"+data[i].tanggal);
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).removeClass( "nonActive2" );
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).addClass( "Active2" );
+
                 }
-
-                // alert(data[i].id_jenis_bahan_alat+"___"+data[i].minggu);
-                $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).text(data[i].jumlah+"_"+data[i].id_satuan+"_"+data[i].tanggal);
-                $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).removeClass( "nonActive2" );
-                $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].minggu).addClass( "Active2" );
 
 
 			    i++;

@@ -102,7 +102,7 @@ else
 				</div>
 
 				<!-- Content Row -->
-
+				<?php $this->load->view('admin_content/card_list_user');?>
 
 				<!-- Content Row -->
 
@@ -113,7 +113,7 @@ else
 						<div class="card shadow mb-12">
 							<!-- Card Header - Dropdown -->
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">Paket <?php echo $this->uri->segment("3"); ?></h6>
+								<h6 class="m-0 font-weight-bold text-primary">View Laporan Harian</h6>
 								<div class="dropdown no-arrow">
 									<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -124,64 +124,90 @@ else
 							<!-- Card Body -->
 							<div class="card-body">
 
-								<div class="row">
-									<div class="col-sm-4"><a href="../perencanaan/<?php echo $this->uri->segment('3'); ?>">Laporan Perencanaan</a> </div>
-									<div class="col-sm-4"><a href="../user_harian_baru/<?php echo $this->uri->segment('3'); ?>">Laporan Harian</a></div>
-									<div class="col-sm-4"><a href="../user_pengawasan_create/<?php echo $this->uri->segment('3'); ?>">Laporan Pengawasan</a></div>
 
-								</div>
 
-								<br>
-								<b>Grafik</b>
-								<input type="hidden" id="id_paket_hidden" value="<?php echo $this->uri->segment('3'); ?>">
-								<div class="panel panel-info">
-									<div class="panel-head"></div>
-									<div class="panel-body">
-										<canvas id="bar-chart" width="800" height="450"></canvas>
-										<script>
-//Ajaxnya
-let id_paket_hidden=$("#id_paket_hidden").val();
-// alert(id_paket_hidden);
-$.ajax({
-    type: "POST",
-    url: "http://localhost/pupr_new/user/chart",
-    data: {"id_paket":id_paket_hidden},
-    dataType: "text",
-    cache:false,
-    success:
-        function(data){
-            data=JSON.parse(data);
-            console.log(data);
-            new Chart(document.getElementById("bar-chart"), {
-                type: 'bar',
-                data: {
-                    labels: ["Laporan Harian", "Laporan Perencanaan","Laporan Pengawasan"],
-                    datasets: [
-                        {
-                            label: "Laporan",
-                            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                            data: [data.harian,data.perencanaan,data.pengawasan]
-                        }
-                    ]
-                },
-                options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Jumlah Laporan Dikerjakan'
-                    }
-                }
-            });
+								<table class="table table-responsive-lg" id="tabel_satu">
+									<tr>
+										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
+										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
+										<th class="tg-nrix" colspan="7">Bulan</th>
+									</tr>
+									<tr>
+										<td class="tg-nrix" colspan="7">Minggu</td>
+									</tr>
+									<tr>
+										<td class="tg-nrix">1</td>
+										<td class="tg-nrix">2</td>
+										<td class="tg-nrix">3</td>
+										<td class="tg-nrix">4</td>
+										<td class="tg-nrix">5</td>
+										<td class="tg-nrix">6</td>
+										<td class="tg-nrix">7</td>
+									</tr>
 
-        }
-});
-                                            // Bar chart
+								</table>
+								<br/>
+								<br/>
+								<br/>
+								<b>Rekapitulasi Pekerja Minggu ke-</b>
+								<table class="table table-responsive-lg" id="tabel_dua">
+									<tr>
+										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
+										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
+										<th class="tg-nrix" colspan="7">Bulan</th>
+									</tr>
+									<tr>
+										<td class="tg-nrix" colspan="7">Minggu</td>
+									</tr>
+									<tr>
+										<td class="tg-nrix">1</td>
+										<td class="tg-nrix">2</td>
+										<td class="tg-nrix">3</td>
+										<td class="tg-nrix">4</td>
+										<td class="tg-nrix">5</td>
+										<td class="tg-nrix">6</td>
+										<td class="tg-nrix">7</td>
+									</tr>
 
-										</script>
-									</div>
-								</div>
+								</table>
+							    <br/>
+								<br/>
+								<br/>
+
+
+
+								<b>Rekapitulasi Penggunaan Bahan/Alat Minggu ke-</b>
+								<table class="table table-responsive-lg" id="tabel_tiga">
+									<tr>
+										<th class="tg-nrix" rowspan="3">Jenis Bahan/Alat</th>
+										<th class="tg-nrix" rowspan="3">Satuan</th>
+										<th class="tg-nrix" colspan="7">Bulan</th>
+									</tr>
+									<tr>
+										<td class="tg-nrix" colspan="7">Minggu</td>
+									</tr>
+									<tr>
+										<td class="tg-nrix">1</td>
+										<td class="tg-nrix">2</td>
+										<td class="tg-nrix">3</td>
+										<td class="tg-nrix">4</td>
+										<td class="tg-nrix">5</td>
+										<td class="tg-nrix">6</td>
+										<td class="tg-nrix">7</td>
+									</tr>
+
+								</table>
+
+
+
 
 							</div>
+
+							<script>
+                                $(document).ready(function() {
+                                    $('#example').DataTable();
+                                } );
+							</script>
 						</div>
 					</div>
 
@@ -235,6 +261,11 @@ $.ajax({
 		</div>
 	</div>
 </div>
+
+
+<script>
+<!--	Ambil data dan isikan kedalam tabel-->
+</script>
 
 
 
