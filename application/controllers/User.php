@@ -914,6 +914,79 @@ public function pekerjaan()
 	}
 
 
+	public function save_pengawasan_baru()
+	{
+      $id_perencanaan=$this->input->post("id_perencanaan");
+      $id_paket=$this->input->post("id_paket");
+      $tanggal=$this->input->post("tanggal");
+      $minggu=$this->input->post("minggu");
+
+//      Select tahun
+		$tahun=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$id_perencanaan))->result();
+		$count=count($tahun);
+		$i=0;
+
+		while($i<$count)
+		{
+			$tahun1=$tahun[$i]->tahun;
+
+			$i++;
+		}
+
+//		Input ke database sekarang
+		$data=array(
+		"id_lap_pengawasan"=>$tanggal,
+		"id_lap_perencanaan"=>$id_perencanaan,
+			"id_paket"=>$id_paket,
+			"tahun"=>$tahun1,
+			"minggu"=>$minggu
+		);
+
+		$this->db->insert("lap_pengawasan",$data);
+	}
+
+
+	public function pengawasan_detail_baru()
+	{
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+		$minggu=$this->input->post("minggu");
+		$jenis_pekerja=$this->input->post("jenis_pekerja");
+		$jenis_pekerjaan=$this->input->post("jenis_pekerjaan");
+		$jumlah=$this->input->post("jumlah");
+
+//		Cari id terlebih dahulu
+		$max=0;
+		$max_id=$this->db->query("SELECT MAX(id) as max FROM detail_laporan_pengawasan")->result();
+		$count=count($max_id);
+		$i=0;
+		while($i<$count)
+		{
+			$max=$max_id[$i]->max;
+
+			$i++;
+		}
+
+		$max++;
+
+		$data=array(
+			"id"=>$max,
+			"id_lap_pengawasan"=>$tanggal,
+			"id_lap_perencanaan"=>$id_perencanaan,
+			"minggu"=>$minggu,
+			"jenis_pekerjaan"=>$jenis_pekerjaan,
+			"jenis_pekerja"=>$jenis_pekerja,
+			"jumlah"=>$jumlah
+
+		);
+
+		$this->db->insert("detail_laporan_pengawasan",$data);
+//		var_dump($data);
+
+	}
+
+
 
 
 
