@@ -29,6 +29,15 @@ else
 
 	<?php $this->load->view('component/header') ?>
 
+	<style>
+		th,td,table{
+			border:2px solid black;
+		}
+		body{
+			color:black;
+		}
+	</style>
+
 
 </head>
 
@@ -122,7 +131,91 @@ else
 								</div>
 							</div>
 							<!-- Card Body -->
+							<input type="hidden" class="form form-control" id="id_harian" value="<?php echo $this->uri->segment('3') ?>">
+							<input type="hidden" class="form form-control" id="id_perencanaan" value="<?php echo $this->uri->segment('4') ?>">
 							<div class="card-body">
+								<center><b>LAPORAN MINGGUAN</b></center>
+								<center><b>PELAKSANAAN KEGIATAN</b></center>
+								<br/>
+								<br/>
+
+<!--								Disini Informasi Paket-->
+								<?php
+								$paket=$this->db->get_where("lap_perencanaan",array("id_lap_perencanaan"=>$this->uri->segment("4")))->result();
+                                $nama_paket="-";
+                                $nilai_paket="-";
+                                $lokasi="-";
+								$count=count($paket);
+								$i=0;
+
+								while($i<$count)
+								{
+									$paket_info=$this->db->get_where("paket",array("id_paket"=>$paket[$i]->id_paket))->result();
+									$count1=count($paket_info);
+
+									$ii=0;
+
+									while($ii<$count1)
+									{
+										$nama_paket=$paket_info[$ii]->nama;
+										$nilai_paket=$paket_info[$ii]->nilai_paket;
+										$lokasi=$paket_info[$ii]->lokasi;
+
+										$ii++;
+									}
+
+									$i++;
+								}
+
+								?>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="row">
+											<div class="col-sm-6">Nama Paket</div>
+											<div class="col-sm-6" id="nama_paket">:<?php echo $nama_paket ?></div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">Jenis Pekerjaan</div>
+											<div class="col-sm-6" id="jenis_pekerjaan">:</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">Lokasi</div>
+											<div class="col-sm-6" id="lokasi">:<?php echo $lokasi ?></div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">Pagu</div>
+											<div class="col-sm-6" id="pagu">:<?php echo $nilai_paket; ?></div>
+											<input type="hidden" id="nilai_paket" value="<?php echo $nilai_paket; ?>">
+										</div>
+									</div>
+									<div class="col-sm-5" style="border: 2px solid black;">
+										<div class="row">
+											<div class="col-sm-6">Progress Pekerjaan</div>
+											<div class="col-sm-6" id="progres_sekarang">:</div>
+										</div>
+
+										<div class="row">
+											<div class="col-sm-6">Progress Fisik Periode Lalu</div>
+											<div class="col-sm-6" >:</div>
+										</div>
+
+										<div class="row">
+											<div class="col-sm-6">Progress Fisik Minggu Ke-</div>
+											<div class="col-sm-6" >:</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">Progress Fisik Selanjutnya</div>
+											<div class="col-sm-6" >:</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">Progress Fisik Total</div>
+											<div class="col-sm-6" >:</div>
+										</div>
+									</div>
+								</div>
+								<br/>
+								<br/>
+								<br/>
 
 
 
@@ -265,6 +358,207 @@ else
 
 <script>
 <!--	Ambil data dan isikan kedalam tabel-->
+let id_harian=$("#id_harian").val();
+let id_perencanaan=$("#id_perencanaan").val();
+
+// alert(id_harian);
+// alert(id_perencanaan);
+$.ajax({
+    type: "POST",
+    url: "http://localhost/pupr_new/view_harian/jenis_pekerjaan_baru",
+    data: {"id_harian":id_harian,"id_perencanaan":id_perencanaan},
+    dataType: "text",
+    cache:false,
+    success:
+        function(data){
+            // alert(data);  //as a debugging message.
+			data=JSON.parse(data);
+			console.log(data);
+			let length=data.length;
+			let i=0;
+
+			while(i<length)
+			{
+			    if($("#"+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_pekerjaan").length>0)
+				{
+
+				}
+			    else
+				{
+				    $("#jenis_pekerjaan").append("<br/>"+"-"+data[i].nama_jenis);
+                    $("#tabel_satu").append('\t\t<tr>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_pekerjaan"+'">'+data[i].nama_jenis+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 jenis_upah_klik" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_upah"+'">'+data[i].nama+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_1"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_2"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_3"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_4"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_5"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_6"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_7"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t</tr>');
+
+                    $("#tabel_dua").append('\t\t<tr>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__pekerjaan"+'">'+data[i].nama_jenis+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__upah"+'">'+data[i].nama+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__1"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__2"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__3"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__4"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__5"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__6"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__7"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t</tr>');
+
+				}
+
+			    //Baru warnai
+                $("#"+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_"+data[i].hari).css("background-color", "#3b5998");
+
+                $("#"+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"__"+data[i].hari).text(data[i].total);
+
+
+
+			    i++;
+			}
+        }
+});
+
+
+$.ajax({
+    type: "POST",
+    url: "http://localhost/pupr_new/view_harian/jenis_alat_baru",
+    data: {"id_harian":id_harian,"id_perencanaan":id_perencanaan},
+    dataType: "text",
+    cache:false,
+    success:
+        function(data){
+            // alert(data);  //as a debugging message.
+            data=JSON.parse(data);
+            console.log(data);
+            let length=data.length;
+            let i=0;
+
+            while(i<length)
+			{
+			    if($("#"+data[i].id_jenis_bahan_alat+"___alat").length>0)
+				{
+
+				}
+			    else
+				{
+                    $("#tabel_tiga").append('\t\t<tr>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1" id="'+data[i].id_jenis_bahan_alat+"___alat"+'">'+data[i].jenis_bahan_alat+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 satuan" id="'+data[i].id_jenis_bahan_alat+"___satuan"+'">'+data[i].satuan+'</td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___1"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___2"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___3"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___4"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___5"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___6"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___7"+'"></td>\n' +
+                        '\t\t\t\t\t\t\t\t\t</tr>');
+
+				}
+
+                $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].hari).text(data[i].jumlah);
+
+
+
+			    i++;
+			}
+
+        }
+});
+</script>
+
+
+<script>
+<!--	Script untuk mencari Progress-->
+
+$.ajax({
+    type: "POST",
+    url: "http://localhost/pupr_new/view_harian/jenis_pekerjaan_baru_sum",
+    data: {"id_harian":id_harian,"id_perencanaan":id_perencanaan},
+	async:false,
+    dataType: "text",
+    cache:false,
+    success:
+        function(data){
+            // alert(data);  //as a debugging message.
+            data=JSON.parse(data);
+            console.log(data);
+            let length=data.length;
+            let i=0;
+            console.log("hmmm");
+
+            let total_pekerja=0;
+
+            while(i<length)
+			{
+               total_pekerja=total_pekerja+(parseInt(data[i].total)*parseInt(data[i].harga));
+
+			    i++;
+			}
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/pupr_new/view_harian/jenis_alat_baru_sum",
+                data: {"id_harian":id_harian,"id_perencanaan":id_perencanaan},
+                async:false,
+                dataType: "text",
+                cache:false,
+                success:
+                    function(data){
+                        // alert(data);  //as a debugging message.
+                        data=JSON.parse(data);
+                        console.log(data);
+                        let length=data.length;
+                        let i=0;
+                        console.log("hmmm");
+
+                        let total_alat=0;
+
+                        while(i<length)
+                        {
+                            total_alat=total_alat+(parseInt(data[i].total)*parseInt(data[i].harga));
+
+                            i++;
+                        }
+
+                        console.log(total_pekerja);
+                        console.log(total_alat);
+                        let nilai_paket=0;
+                        nilai_paket=$("#nilai_paket").val();
+                        nilai_paket=parseInt(nilai_paket);
+
+                    //    Progres sekarang
+						let progres_sekarang=total_alat+total_pekerja;
+                        progres_sekarang=progres_sekarang/nilai_paket;
+                        progres_sekarang=progres_sekarang*100;
+
+                        // alert(progres_sekarang);
+						progres_sekarang=progres_sekarang.toFixed(2);
+
+                        $("#progres_sekarang").append(progres_sekarang+"%");
+
+
+
+
+
+                    }
+            });
+
+
+
+        }
+});
+
+
+
+//Cari Progress Fisik Peiode Sebelumnya
+
+
 </script>
 
 

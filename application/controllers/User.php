@@ -252,6 +252,12 @@ public function user_pengawasan_create($i)
    $this->load->view("user/user_pengawasan");
 }
 
+	public function user_pengawasan_create_baru($i)
+
+	{
+		$this->load->view("user/user_pengawasan_baru");
+	}
+
 
 public function save_pengawasan()
 {
@@ -894,6 +900,16 @@ public function pekerjaan()
 //		var_dump($data);
 
 		$this->db->insert("detail_alat_harian",$data);
+
+	}
+
+
+	public function list_pekerjaan()
+	{
+      $id_perencanaan=$this->input->post("id_perencanaan");
+
+      $data=$this->db->query("SELECT * FROM detail_jenis_pekerjaan INNER JOIN jenis_pekerjaan ON detail_jenis_pekerjaan.id=jenis_pekerjaan.id WHERE id_lap_perencanaan='$id_perencanaan' GROUP BY detail_jenis_pekerjaan.id")->result();
+      echo json_encode($data);
 
 	}
 
