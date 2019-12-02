@@ -14,6 +14,11 @@ class User_pengawasan_data extends CI_Controller {
 		$data['data']=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$id,"id_lap_perencanaan"=>$id2,"minggu"=>$id3))->result();
 		$this->load->view('user/user_pengawasan_view',$data);
 	}
+	public function view_baru($id,$id2,$id3)
+	{
+		$data['data']=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$id,"id_lap_perencanaan"=>$id2,"minggu"=>$id3))->result();
+		$this->load->view('user/user_pengawasan_view_baru',$data);
+	}
 
 	public function edit($id,$id2,$id3)
 	{
@@ -172,6 +177,29 @@ class User_pengawasan_data extends CI_Controller {
 
 		$data=$this->db->get_where("ttd_pengawasan",array("minggu"=>$minggu,"id_pengawasan"=>$id_pengawasn,"id_perencanaan"=>$id_laper))->result();
 		echo json_encode($data);
+	}
+
+
+	public function data_view_baru()
+	{
+
+		$tanggal=$this->input->post("tanggal");
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$minggu=$this->input->post("minggu");
+
+		// Select datanya sekarang
+		$this->db->select('*');
+		$this->db->from('detail_laporan_pengawasan');
+		$this->db->join('jenis_pekerjaan', 'detail_laporan_pengawasan.jenis_pekerjaan = jenis_pekerjaan.id');
+		$this->db->join('jenis_upah', 'detail_laporan_pengawasan.jenis_pekerja = jenis_upah.id_jenis_upah');
+		$this->db->where("id_lap_pengawasan",$tanggal);
+		$this->db->where("id_lap_perencanaan",$id_perencanaan);
+		$this->db->where("minggu",$minggu);
+
+		// $data=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$tanggal,"id_lap_perencanaan"=>$id_perencanaan,"minggu"=>$minggu))->result();
+		$data=$this->db->get()->result();
+		echo json_encode($data);
+
 	}
 
 
