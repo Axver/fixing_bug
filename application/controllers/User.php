@@ -988,6 +988,30 @@ public function pekerjaan()
 
 
 
+	public function baru_harian_edit()
+	{
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$id_harian=$this->input->post("id_harian");
+
+		// Delete data jenis pekerjaan dan data alat yang lama
+		$this->db->query("DELETE FROM detail_bahan_alat_harian WHERE id_lap_harian_mingguan='$id_harian' AND id_lap_perencanaan='$id_perencanaan' AND id_paket='$id_paket'");
+		$this->db->query("DELETE FROM detail_alat_harian WHERE id_lap_harian_mingguan='$id_harian' AND id_lap_perencanaan='$id_perencanaan' AND id_paket='$id_paket'");
+	}
+
+
+	public function save_pengawasan_baru1()
+	{
+      $id_perencanaan=$this->input->post("id_perencanaan");
+      $id_paket=$this->input->post("id_paket");
+      $tanggal=$this->input->post("tanggal");
+      $minggu=$this->input->post("minggu");
+
+  $this->db->query("DELETE FROM detail_laporan_pengawasan WHERE id_lap_perencanaan='$id_perencanaan' AND id_lap_pengawasan='$tanggal' AND minggu='$minggu'");
+	}
+
+
+
 
 
 

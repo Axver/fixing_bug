@@ -26,6 +26,12 @@ class User_pengawasan_data extends CI_Controller {
 		$this->load->view('user/user_pengawasan_edit',$data);
 	}
 
+	public function edit_baru($id,$id2,$id3)
+	{
+		$data['data']=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$id,"id_lap_perencanaan"=>$id2,"minggu"=>$id3))->result();
+		$this->load->view('user/user_pengawasan_edit_baru',$data);
+	}
+
 	public function lampiran($id,$id2,$id3)
 	{
 		$data['data']=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$id,"id_lap_perencanaan"=>$id2,"minggu"=>$id3))->result();
@@ -199,6 +205,108 @@ class User_pengawasan_data extends CI_Controller {
 		// $data=$this->db->get_where("detail_laporan_pengawasan",array("id_lap_pengawasan"=>$tanggal,"id_lap_perencanaan"=>$id_perencanaan,"minggu"=>$minggu))->result();
 		$data=$this->db->get()->result();
 		echo json_encode($data);
+
+	}
+
+
+	public function all_data()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+		$minggu=$this->input->post("minggu");
+
+
+
+		// Selectd ata dari db
+		$data=$this->db->query("
+		SELECT * FROM detail_laporan_pengawasan
+		INNER JOIN jenis_pekerjaan ON detail_laporan_pengawasan.jenis_pekerjaan=jenis_pekerjaan.id
+		INNER JOIN jenis_upah ON detail_laporan_pengawasan.jenis_pekerja=jenis_upah.id_jenis_upah
+		WHERE id_lap_pengawasan='$tanggal' AND id_lap_perencanaan='$id_perencanaan'
+		AND minggu='$minggu'
+		")->result();
+
+
+		echo json_encode($data);
+		
+
+
+	}
+
+
+	public function ttd_edit_pengawasan()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+		$minggu=$this->input->post("minggu");
+		$id_diperiksa=$this->input->post("id_diperiksa");
+
+
+		// Delete dulu
+
+		$this->db->query("DELETE FROM ttd_pengawasan WHERE minggu='$minggu' AND id_pengawasan='$tanggal' AND id_perencanaan='$id_perencanaan'");
+
+		// Baru inptukan gan
+		$data=array(
+		  "minggu"=>$minggu,
+		  "id_pengawasan"=>$tanggal,
+		  "id_perencanaan"=>$id_perencanaan,
+		  "id_dibuat"=>$this->session->userdata("nip"),
+		  "id_diperiksa"=>$id_diperiksa,
+		);
+
+
+		$this->db->insert("ttd_pengawasan",$data);
+	}
+
+
+	public function ttd_edit_pengawasan1()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+		$minggu=$this->input->post("minggu");
+	
+
+
+	
+		// Baru inptukan gan
+		$data=array(
+		  "minggu"=>$minggu,
+		  "id_pengawasan"=>$tanggal,
+		  "id_perencanaan"=>$id_perencanaan,
+		
+		 
+		);
+
+
+		$data=$this->db->get_where("ttd_pengawasan",$data)->result();
+		echo json_encode($data);
+	}
+
+
+	public function ttd_view_pengawasan()
+	{
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$tanggal=$this->input->post("id_pengawasan");
+		$minggu=$this->input->post("minggu");
+
+		// Select dari db
+		$data=$this->db->query("SELECT * ,konfigurasi.nip as konfigurasi_nip,account.nip as account_nip,konfigurasi.nama as konfigurasi_nama,account.nama as account_nama FROM ttd_pengawasan INNER JOIN konfigurasi ON
+		ttd_pengawasan.id_diperiksa=konfigurasi.id_konfigurasi
+		INNER JOIN account ON ttd_pengawasan.id_dibuat=account.nip
+		WHERE minggu='$minggu' AND id_pengawasan='$tanggal' AND id_perencanaan='$id_perencanaan'")->result();
+
+
+echo json_encode($data);
+
+
+
 
 	}
 

@@ -357,6 +357,7 @@ else
 	let kuy=0;
 	function rowSatu()
 	{
+        kuy=parseInt(kuy)+5;
 	    let pekerjaan=$("#pekerjaan option:selected").text();
 	    let pekerjaan_id=$("#pekerjaan").val();
 
@@ -404,7 +405,7 @@ else
 
             $("#tabel_dua").append('\t\t<tr>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"__pekerjaan"+'">'+pekerjaan_id+"_"+pekerjaan+'</td>\n' +
-                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"__upah"+"_"+kuy+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"_upah"+"_"+kuy+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"__1"+"_"+kuy+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"__2"+"_"+kuy+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+pekerjaan_id+"__3"+"_"+kuy+'"></td>\n' +
@@ -673,8 +674,8 @@ else
         let data=$("#hari_value").val();
         let id2=id.replace("_","__");
 
-        alert(id);
-        alert(id2);
+        // alert(id);
+        // alert(id2);
 
         //Ubah Status Class
         $( "#"+id ).removeClass( "nonActive" );
@@ -736,6 +737,7 @@ else
 
 
         console.log(dataArray);
+        console.log(dataArray1)
 
         let length=dataArray.length;
         let length1=dataArray1.length;
@@ -758,7 +760,7 @@ else
         $.ajax({
             type: "POST",
 			async:false,
-            url: "http://localhost/pupr_new/user/baru_harian",
+            url: "http://localhost/pupr_new/user/baru_harian_edit",
             data: {"id_harian":id,"id_perencanaan":id_perencanaan,"id_paket":id_paket},
             dataType: "text",
             cache:false,
@@ -766,7 +768,7 @@ else
                 function(data){
                     // alert(data);  //as a debugging message.
 
-					console.log(data);
+					
                     while(j<length)
                     {
                         transform=dataArray[j].replace("_","__");
@@ -774,12 +776,10 @@ else
                         let upah=dataArray[j].split("_");
                         let ambil=dataArray[j].split("_");
 
-                        console.log("testing");
-                        console.log(upah);
+                      
 
                         upah=upah[0]+"_upah"+"_"+upah[2];
-                        console.log(upah);
-                        console.log("testing");
+                     
                         upah=$("#"+upah).text();
                         upah=upah.split("_");
                         upah=upah[0];
@@ -800,9 +800,20 @@ else
 						//
                         // jumlah_pekerja=$("#"+transform).text();
 
+                        console.log("kenapa semua terhapus?");
+                        console.log(id);
+                        console.log(id_perencanaan);
+                        console.log(id_paket);
+                        console.log(upah);
+                        console.log(ambil[1]);
+                        console.log(jumlah_pekerja);
+
+
+
                         //Ajax Disini untuk menambahkan
                         $.ajax({
                             type: "POST",
+                            async:false,
                             url: "http://localhost/pupr_new/user/baru_pekerjaan",
                             data: {"id_harian":id,"id_perencanaan":id_perencanaan,"id_paket":id_paket,"id_upah":upah,"hari":ambil[1],"jenis_pekerjaan":ambil[0],"total":jumlah_pekerja},
                             dataType: "text",
@@ -837,15 +848,38 @@ else
                         // console.log(transform1);
                         // console.log("hmmmmm");
                         let satuan=transform1.split("___");
-                        console.log("hmmm");
-                        console.log(satuan);
-                        console.log("jmmmm");
+                     
                         let ambil=dataArray1[q].split("___");
 
+                        
+
                         satuan=satuan[0]+"___satuan";
+                        // console.log(satuan);
                         satuan=$("#"+satuan).text();
+                        // console.log(satuan);
                         satuan=satuan.split("_");
+                        // console.log(satuan);
                         satuan=satuan[0];
+                        // console.log(satuan);
+
+
+
+                        // console.log("list lengkap");
+                        // console.log(id);
+                        // console.log(id_perencanaan);
+                        // console.log(id_paket);
+                        // console.log(satuan);
+                        // console.log(ambil[1]);
+                        // console.log(ambil[0]);
+                        // console.log(jumlah_alat);
+
+
+
+
+
+
+
+                        
                         //Ambil Jnis Upah
                         // ambil=dataArray[i].split("_");
                         // console.log("---------");
@@ -866,6 +900,7 @@ else
                         //Ajax Disini untuk menambahkan
                         $.ajax({
                             type: "POST",
+                            async:false,
                             url: "http://localhost/pupr_new/user/baru_alat",
                             data: {"id_harian":id,"id_perencanaan":id_perencanaan,"id_paket":id_paket,"id_satuan":satuan,"hari":ambil[1],"jenis_bahan_alat":ambil[0],"total":jumlah_alat},
                             dataType: "text",
@@ -880,6 +915,20 @@ else
 
                         q++;
 					}
+
+                    let diperiksa_oleh=$("#diperiksa_oleh").val();
+                    $.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/view_harian/ttd_update", 
+         data: {"id_harian":id,"id_perencanaan":id_perencanaan,"id_paket":id_paket,"diperiksa_oleh":diperiksa_oleh},
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+                alert("Data Berhasil Di Update!!");
+              }
+          });
                 }
         });
 
@@ -946,7 +995,7 @@ $.ajax({
 	    if($("#"+data[i].jenis_pekerjaan+"_pekerjaan").length>0)
 		{
             $("#tabel_satu").append('\t\t<tr>\n' +
-                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_pekerjaan"+"_"+i+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_pekerjaan"+"_"+data[i].id_jenis_upah+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 jenis_upah_klik" id="'+data[i].jenis_pekerjaan+"_upah"+"_"+data[i].id_jenis_upah+'">'+data[i].id_jenis_upah+"_"+data[i].nama+'</td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_1"+"_"+data[i].id_jenis_upah+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_2"+"_"+data[i].id_jenis_upah+'"></td>\n' +
@@ -958,7 +1007,7 @@ $.ajax({
                 '\t\t\t\t\t\t\t\t\t</tr>');
 
             $("#tabel_dua").append('\t\t<tr>\n' +
-                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"__pekerjaan"+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"__pekerjaan"+"_"+data[i].id_jenis_upah+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"__upah"+"_"+data[i].id_jenis_upah+'">'+data[i].id_jenis_upah+"_"+data[i].nama+'</td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"__1"+"_"+data[i].id_jenis_upah+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 nonActive1" id="'+data[i].jenis_pekerjaan+"__2"+"_"+data[i].id_jenis_upah+'"></td>\n' +
@@ -974,8 +1023,8 @@ $.ajax({
 	    else
 		{
             $("#tabel_satu").append('\t\t<tr>\n' +
-                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_pekerjaan"+"_"+i+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
-                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 jenis_upah_klik" id="'+data[i].jenis_pekerjaan+"_upah"+"__"+data[i].id_jenis_upah+'">'+data[i].id_jenis_upah+"_"+data[i].nama+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_pekerjaan"+"_"+data[i].id_jenis_upah+'">'+data[i].jenis_pekerjaan+"_"+data[i].nama_jenis+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 jenis_upah_klik" id="'+data[i].jenis_pekerjaan+"_upah"+"_"+data[i].id_jenis_upah+'">'+data[i].id_jenis_upah+"_"+data[i].nama+'</td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_1"+"_"+data[i].id_jenis_upah+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_2"+"_"+data[i].id_jenis_upah+'"></td>\n' +
                 '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai nonActive" id="'+data[i].jenis_pekerjaan+"_3"+"_"+data[i].id_jenis_upah+'"></td>\n' +
@@ -1091,6 +1140,148 @@ $.ajax({
         $("#"+data[i].jenis_pekerjaan+"__"+data[i].hari+"_"+data[i].id_jenis_upah).removeClass("nonActive1");
         $("#"+data[i].jenis_pekerjaan+"__"+data[i].hari+"_"+data[i].id_jenis_upah).addClass("Active1");
 
+                    i++;
+                }
+              }
+          });
+
+
+
+        //   Select Bahan/Alat dari database
+        $.ajax({
+         type: "POST",
+         async:false,
+         url: "http://localhost/pupr_new/view_harian/list_alat_baru", 
+         data: {"id_perencanaan":id_perencanaan_baru,"id_paket":id_paket_baru,"tanggal":tanggal_baru},
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+                data=JSON.parse(data);
+
+                console.log("Bahan alat yang ditemukan");
+                console.log(data);
+                console.log("finished");
+
+
+                let length=data.length;
+
+                let i=0;
+
+                while(i<length)
+                {
+                    $("#tabel_tiga").append('\t\t<tr>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1" id="'+data[i].id_jenis_bahan_alat+"___alat"+'">'+data[i].jenis_bahan_alat+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 satuan" id="'+data[i].id_jenis_bahan_alat+"___satuan"+'">'+data[i].id_satuan+"_"+data[i].satuan+'</td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___1"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___2"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___3"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___4"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___5"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___6"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 warnai1" id="'+data[i].id_jenis_bahan_alat+"___7"+'"></td>\n' +
+                '\t\t\t\t\t\t\t\t\t</tr>');
+
+                    i++;
+                }
+
+                // Baru isi datanya sekarang
+
+                $.ajax({
+                type: "POST",
+                async:false,
+                url: "http://localhost/pupr_new/view_harian/all_alat", 
+                data: {"id_perencanaan":id_perencanaan_baru,"id_paket":id_paket_baru,"tanggal":tanggal_baru},
+                dataType: "text",  
+                cache:false,
+                success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+                data=JSON.parse(data);
+                let length=data.length;
+                let i=0;
+
+                while(i<length)
+                {
+
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].hari).text(data[i].jumlah);
+
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].hari).removeClass("nonActive2");
+                    $("#"+data[i].id_jenis_bahan_alat+"___"+data[i].hari).addClass("Active2");
+
+                    i++;
+                }
+
+
+                var classname = document.getElementsByClassName("satuan");
+
+var myFunction = function() {
+    var attribute = this.id;
+    console.log(attribute);
+    $("#id_satuan").val(attribute);
+    $("#mSatuan").modal("show");
+};
+
+for (var j = 0; j < classname.length; j++) {
+    classname[j].addEventListener('click', myFunction, false);
+}
+
+//    Event Listener Untuk Jenis
+var classname = document.getElementsByClassName("warnai1");
+
+var myFunction = function() {
+    var attribute = this.id;
+    console.log(attribute);
+    $("#"+attribute).text("");
+    $("#"+attribute).removeClass("Active2");
+    $("#"+attribute).addClass("nonActive2");
+    $("#id_warnai").val(attribute);
+    $("#wAlat").modal("show");
+};
+
+for (var k = 0; k < classname.length; k++) {
+    classname[k].addEventListener('click', myFunction, false);
+}
+
+
+              }
+          });
+              }
+          });
+
+
+</script>
+
+
+
+<script>
+
+
+// Script untuk memastikan kolom tandatangan sesuai dengan apa yang telah diinputkan user
+
+let id_perencanaan_x=$("#id_perencanaan").val();
+let tanggal_x=$("#hari_tanggal").val();
+
+// Select dari db
+
+$.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/view_harian/ttd_edit", 
+         data: {"id_perencanaan":id_perencanaan_x,"tanggal":tanggal_x},
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+                data=JSON.parse(data);
+
+                let length=data.length;
+                let i=0;
+
+                while(i<length)
+                {
+                    $('#diperiksa_oleh option[value="'+data[i].id_diperiksa+'"]').attr('selected','selected');
                     i++;
                 }
               }

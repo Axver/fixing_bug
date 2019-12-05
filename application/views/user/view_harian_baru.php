@@ -134,7 +134,10 @@ else
 							<input type="hidden" class="form form-control" id="id_harian" value="<?php echo $this->uri->segment('3') ?>">
 							<input type="hidden" class="form form-control" id="id_perencanaan" value="<?php echo $this->uri->segment('4') ?>">
 							<div class="card-body">
-								<center><b>LAPORAN MINGGUAN</b></center>
+							<button class="btn btn-facebook" style="width:100%;" onclick="generatePDF()">Cetak PDF</button>
+							  <div id="cetak">
+							  
+							  <center><b>LAPORAN MINGGUAN</b></center>
 								<center><b>PELAKSANAAN KEGIATAN</b></center>
 								<br/>
 								<br/>
@@ -223,22 +226,23 @@ else
 									<tr>
 										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
 										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
-										<th class="tg-nrix" colspan="7">Bulan</th>
+										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
 									</tr>
 									<tr>
 										<td class="tg-nrix" colspan="7">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix">1</td>
-										<td class="tg-nrix">2</td>
-										<td class="tg-nrix">3</td>
-										<td class="tg-nrix">4</td>
-										<td class="tg-nrix">5</td>
-										<td class="tg-nrix">6</td>
-										<td class="tg-nrix">7</td>
+										<td class="tg-nrix 1">1</td>
+										<td class="tg-nrix 2">2</td>
+										<td class="tg-nrix 3">3</td>
+										<td class="tg-nrix 4">4</td>
+										<td class="tg-nrix 5">5</td>
+										<td class="tg-nrix 6">6</td>
+										<td class="tg-nrix 7">7</td>
 									</tr>
 
 								</table>
+								<div class="break"></div>
 								<br/>
 								<br/>
 								<br/>
@@ -247,25 +251,27 @@ else
 									<tr>
 										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
 										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
-										<th class="tg-nrix" colspan="7">Bulan</th>
+										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
 									</tr>
 									<tr>
 										<td class="tg-nrix" colspan="7">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix">1</td>
-										<td class="tg-nrix">2</td>
-										<td class="tg-nrix">3</td>
-										<td class="tg-nrix">4</td>
-										<td class="tg-nrix">5</td>
-										<td class="tg-nrix">6</td>
-										<td class="tg-nrix">7</td>
+										<td class="tg-nrix 1">1</td>
+										<td class="tg-nrix 2">2</td>
+										<td class="tg-nrix 3">3</td>
+										<td class="tg-nrix 4">4</td>
+										<td class="tg-nrix 5">5</td>
+										<td class="tg-nrix 6">6</td>
+										<td class="tg-nrix 7">7</td>
 									</tr>
 
 								</table>
+								
 							    <br/>
 								<br/>
 								<br/>
+								<div class="break"></div>
 
 
 
@@ -274,23 +280,76 @@ else
 									<tr>
 										<th class="tg-nrix" rowspan="3">Jenis Bahan/Alat</th>
 										<th class="tg-nrix" rowspan="3">Satuan</th>
-										<th class="tg-nrix" colspan="7">Bulan</th>
+										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
 									</tr>
 									<tr>
 										<td class="tg-nrix" colspan="7">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix">1</td>
-										<td class="tg-nrix">2</td>
-										<td class="tg-nrix">3</td>
-										<td class="tg-nrix">4</td>
-										<td class="tg-nrix">5</td>
-										<td class="tg-nrix">6</td>
-										<td class="tg-nrix">7</td>
+										<td class="tg-nrix 1">1</td>
+										<td class="tg-nrix 2">2</td>
+										<td class="tg-nrix 3">3</td>
+										<td class="tg-nrix 4">4</td>
+										<td class="tg-nrix 5">5</td>
+										<td class="tg-nrix 6">6</td>
+										<td class="tg-nrix 7">7</td>
 									</tr>
 
 								</table>
 
+
+								<br/>
+								<br/>
+								
+
+								<?php
+								function tgl_indo($tanggal){
+									$bulan = array (
+										1 =>   'Januari',
+										'Februari',
+										'Maret',
+										'April',
+										'Mei',
+										'Juni',
+										'Juli',
+										'Agustus',
+										'September',
+										'Oktober',
+										'November',
+										'Desember'
+									);
+									$pecahkan = explode('-', $tanggal);
+									
+									// variabel pecahkan 0 = tanggal
+									// variabel pecahkan 1 = bulan
+									// variabel pecahkan 2 = tahun
+								 
+									return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+								}
+								 
+
+								?>
+
+								<div class="row" style="text-align:center;">
+								
+								<div class="col-sm-1"></div>
+								<div class="col-sm-3">Diperiksa Oleh,
+								<div id="jabatan"></div>
+								<br/><br/>
+								<u id="nama"></u>
+								<div id="nip"></div>
+								</div>
+								
+								<div class="col-sm-4"></div>
+							
+								<div class="col-sm-3">Jambi, <?php echo tgl_indo($this->uri->segment("3")); ?><br>Dibuat Oleh<br/><br/><br/>
+								<u id="nama1"></u>
+								<div id="nip1"></div>
+								</div>
+								<div class="col-sm-1"></div>
+
+								</div>
+</div>
 
 
 
@@ -300,6 +359,9 @@ else
                                 $(document).ready(function() {
                                     $('#example').DataTable();
                                 } );
+
+
+							
 							</script>
 						</div>
 					</div>
@@ -557,6 +619,321 @@ $.ajax({
 
 
 //Cari Progress Fisik Peiode Sebelumnya
+
+
+
+
+
+// Tandatangan
+	// Isikan ttd nya
+	                            $.ajax({
+                                type: "POST",
+                                url: "http://localhost/pupr_new/view_harian/ttd_view", 
+                                data: {"id_harian":id_harian,"id_perencanaan":id_perencanaan},
+                                dataType: "text",  
+                                cache:false,
+                                success: 
+                                function(data){
+                                // alert(data);  //as a debugging message.
+								data=JSON.parse(data);
+								let length=data.length;
+								let i=0;
+
+								console.log(data);
+
+
+								while(i<length)
+								{
+
+
+									$("#jabatan").text(data[i].jabatan);
+									$("#nama").text(data[i].konfigurasi_nama);
+									$("#nip").text("NRP."+data[i].konfigurasi_nip);
+									$("#nama1").text(data[i].account_nama);
+									$("#nip1").text("NRP."+data[i].account_nip);
+
+
+									i++;
+								}
+                                }
+                                });
+
+
+
+								// Ganti Bulan yang ada dengan bulan pada tanggal
+
+								let bulan=id_harian.split("-");
+								bulan=bulan[1];
+
+								if(bulan==1)
+								{
+									bulan="Januari";
+								}
+								else if(bulan==2)
+								{
+									bulan="Februari";
+								}
+								else if(bulan==3)
+								{
+									bulan="Maret";
+								}else if(bulan==4)
+								{
+									bulan="April";
+								}else if(bulan==5)
+								{
+									bulan="Mei";
+								}else if(bulan==6)
+								{
+									bulan="Juni";
+								}else if(bulan==7)
+								{
+									bulan="Juli";
+								}else if(bulan==8)
+								{
+									bulan="Agustus";
+								}else if(bulan==9)
+								{
+									bulan="September";
+								}else if(bulan==10)
+								{
+									bulan="Oktober";
+								}else if(bulan==11)
+								{
+									bulan="November";
+								}
+								else if(bulan==12)
+								{
+									bulan="Desember";
+								}
+
+								$(".bulan_jesi").text(bulan);
+
+
+
+								
+
+
+
+</script>
+
+
+
+<script>
+// Secret Code
+
+function getWeeksInMonth(month_number, year) {
+                        // console.log("year - "+year+" month - "+month_number+1);
+
+                        var day = 0;
+                        var firstOfMonth = new Date(year, month_number, 1);
+                        var lastOfMonth = new Date(year, parseInt(month_number)+1, 0);
+
+                        if (firstOfMonth.getDay() == 0) {
+                            day = 2;
+                            firstOfMonth = firstOfMonth.setDate(day);
+                            firstOfMonth = new Date(firstOfMonth);
+                        } else if (firstOfMonth.getDay() != 1) {
+                            day = 9-(firstOfMonth.getDay());
+                            firstOfMonth = firstOfMonth.setDate(day);
+                            firstOfMonth = new Date(firstOfMonth);
+                        }
+
+                        var days = (lastOfMonth.getDate() - firstOfMonth.getDate())+1
+                        return Math.ceil( days / 7);
+                    }
+
+Date.prototype.getWeek = function () {
+        var target  = new Date(this.valueOf());
+        var dayNr   = (this.getDay() + 6) % 7;
+        target.setDate(target.getDate() - dayNr + 3);
+        var firstThursday = target.valueOf();
+        target.setMonth(0, 1);
+        if (target.getDay() != 4) {
+            target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+        }
+        return 1 + Math.ceil((firstThursday - target) / 604800000);
+    }
+
+    function getDateRangeOfWeek(weekNo){
+        var d1 = new Date();
+        numOfdaysPastSinceLastMonday = eval(d1.getDay()- 1);
+        d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+        var weekNoToday = d1.getWeek();
+        var weeksInTheFuture = eval( weekNo - weekNoToday );
+        d1.setDate(d1.getDate() + eval( 7 * weeksInTheFuture ));
+        var rangeIsFrom = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + d1.getFullYear();
+        d1.setDate(d1.getDate() + 6);
+        var rangeIsTo = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + d1.getFullYear() ;
+        return rangeIsFrom + " to "+rangeIsTo;
+    };
+
+
+	// Mengganti tulisan tanggal engan tanggal sesungguhnya
+	// Coba disini
+
+
+
+	let dataM=id_harian;
+	dataM=dataM.split("-");
+	let minggu_=0;
+
+
+	let v=1;
+
+	while(v<dataM[1])
+	{
+
+		minggu_=parseInt(minggu_)+parseInt(getWeeksInMonth(v, dataM[0]));
+
+
+
+		v++;
+	}
+
+
+	console.log("minggu bulan terakhirnya:"+minggu_);
+
+	// Kemudian check 5 minggu sesudahnya
+
+	let y=1;
+	let range;
+
+	while(y<=5)
+	{
+		hoho=parseInt(minggu_)+parseInt(y);
+
+		range=getDateRangeOfWeek(hoho);
+		range=range.split(" to ");
+
+		tanggal_start=stringToDate(range[0],"MM/dd/yyyy","/");
+        tanggal_end=stringToDate(range[1],"MM/dd/yyyy","/");
+		tanggal_pilihan=new Date(id_harian);
+
+		if(tanggal_start<tanggal_pilihan && tanggal_pilihan<tanggal_end)
+	    {
+			minggu_get=hoho;
+		    console.log(minggu_get);
+
+            console.log("Wahahaha");
+			let m=1;
+			let tanggal_ambil=tanggal_start;
+			while(m<=7)
+			{
+
+
+
+                console.log(convert(tanggal_ambil));
+				var tomorrow = new Date(tanggal_ambil);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+				tanggal_ambil=tomorrow;
+
+				$("."+m).text(convert(tanggal_ambil));
+				
+				m++;
+			}
+			
+
+	    }
+
+
+		console.log(range);
+
+        
+		y++;
+	}
+
+
+
+	function stringToDate(_date,_format,_delimiter)
+    {
+        var formatLowerCase=_format.toLowerCase();
+        var formatItems=formatLowerCase.split(_delimiter);
+        var dateItems=_date.split(_delimiter);
+        var monthIndex=formatItems.indexOf("mm");
+        var dayIndex=formatItems.indexOf("dd");
+        var yearIndex=formatItems.indexOf("yyyy");
+        var month=parseInt(dateItems[monthIndex]);
+        month-=1;
+        var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+        return formatedDate;
+    }
+
+
+	function convert(str) {
+  var date = new Date(str),
+    mnth = ((date.getMonth() + 1));
+    day = (date.getDate());
+	if(mnth==1)
+	{
+		mnth="Januari";
+	}
+	else if(mnth==2)
+	{
+		mnth="Februari";
+	}
+	else if(mnth==3)
+	{
+		mnth="Maret";
+	}
+	else if(mnth==4)
+	{
+		mnth="April";
+	}
+	else if(mnth==5)
+	{
+		mnth="Mei";
+	}
+	else if(mnth==6)
+	{
+		mnth="Juni";
+	}
+	else if(mnth==7)
+	{
+		mnth="Juli";
+	}
+	else if(mnth==8)
+	{
+		mnth="Agustus";
+	}
+	else if(mnth==9)
+	{
+		mnth="September";
+	}
+	else if(mnth==10)
+	{
+		mnth="Oktober";
+	}
+	else if(mnth==11)
+	{
+		mnth="November";
+	}
+	else if(mnth==12)
+	{
+		mnth="Desember";
+	}
+  return [ day,mnth, date.getFullYear()].join(" ");
+}
+
+
+function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("cetak");
+        // Choose the element and save the PDF for our user.
+        var opt = {
+            margin:       1,
+            filename:     'myfile.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' },
+            pagebreak: { before: '.break'}
+        };
+        // Choose the element and save the PDF for our user.
+        html2pdf().set(opt).from(element).save();
+
+        swal("PDF Digenerate!!");
+    }
+
+
 
 
 </script>

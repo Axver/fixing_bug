@@ -413,4 +413,100 @@ WHERE id_lap_harian_mingguan='$id_harian' AND id_lap_perencanaan='$id_perencanaa
 	}
 
 
+
+	public function list_alat_baru()
+	{
+
+		// echo "hmm";
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+
+
+		$data=$this->db->query("SELECT *, SUM(jumlah) FROM detail_alat_harian INNER JOIN jenis_bahan_alat ON detail_alat_harian.id_jenis_bahan_alat=jenis_bahan_alat.id_jenis_bahan_alat INNER JOIN satuan ON detail_alat_harian.id_satuan=satuan.id_satuan WHERE id_lap_harian_mingguan='$tanggal' AND id_lap_perencanaan='$id_perencanaan' AND id_paket='$id_paket' GROUP BY detail_alat_harian.id_jenis_bahan_alat")->result();
+
+
+		echo json_encode($data);
+
+	}
+
+
+	public function all_alat()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("tanggal");
+
+
+		$data=$this->db->query("SELECT * FROM detail_alat_harian INNER JOIN jenis_bahan_alat ON detail_alat_harian.id_jenis_bahan_alat=jenis_bahan_alat.id_jenis_bahan_alat INNER JOIN satuan ON detail_alat_harian.id_satuan=satuan.id_satuan WHERE id_lap_harian_mingguan='$tanggal' AND id_lap_perencanaan='$id_perencanaan' AND id_paket='$id_paket'")->result();
+
+
+		echo json_encode($data);
+
+	}
+
+
+	public function ttd_update()
+	{
+
+		
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$id_paket=$this->input->post("id_paket");
+		$tanggal=$this->input->post("id_harian");
+
+		$diperiksa_oleh=$this->input->post("diperiksa_oleh");
+
+
+
+		// Delete dari database dulu
+
+		$this->db->query("DELETE FROM ttd_harian WHERE id_lap_harian='$tanggal' AND id_lap_perencanaan='$id_perencanaan'");
+
+		// Setelah di delete baru inputkan
+
+		$data=array(
+		 "id_lap_harian"=>$tanggal,
+		 "id_lap_perencanaan"=>$id_perencanaan,
+		 "id_dibuat"=>$this->session->userdata("nip"),
+		 "id_diperiksa"=>$diperiksa_oleh,
+		);
+
+		// Input data
+		$this->db->insert("ttd_harian",$data);
+
+
+	}
+
+
+	public function ttd_edit()
+	{
+
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$tanggal=$this->input->post("tanggal");
+
+		$data=$this->db->get_where("ttd_harian",array("id_lap_harian"=>$tanggal,"id_lap_perencanaan"=>$id_perencanaan))->result();
+
+		echo json_encode($data);
+
+	}
+
+
+	public function ttd_view()
+	{
+		$id_harian=$this->input->post("id_harian");
+		$id_perencanaan=$this->input->post("id_perencanaan");
+
+
+		// Select disini
+
+		$data=$this->db->query("SELECT *,account.nip as account_nip,konfigurasi.nip as konfigurasi_nip,konfigurasi.nama as konfigurasi_nama,account.nama as account_nama FROM ttd_harian INNER JOIN konfigurasi ON ttd_harian.id_diperiksa=konfigurasi.id_konfigurasi
+		INNER JOIN account ON ttd_harian.id_dibuat=account.nip WHERE id_lap_harian='$id_harian' AND id_lap_perencanaan='$id_perencanaan'")->result();
+
+
+
+		echo json_encode($data);
+	}
+
+
 }

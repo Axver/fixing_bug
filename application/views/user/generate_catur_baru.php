@@ -35,11 +35,7 @@ else
         border:2px solid black;
     }
 
-    table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-}
+ 
 
 body{
     color:black;
@@ -141,8 +137,11 @@ body{
 							<!-- Card Body -->
 							<div class="card-body">
                             <!-- Pilih Datanya Dulu -->
+                         
+
+                            <?php echo form_open_multipart('upload/aksi_upload_tahap');?>
                             <b>Pilih Paket</b>
-                            <select onchange="listPerencanaan()" id="id_paket" class="form form-control">
+                            <select onchange="listPerencanaan()" id="id_paket" name="id_paket" class="form form-control">
                             <option>--Pilih Paket--</option>
                             <?php
                             
@@ -162,45 +161,187 @@ body{
                             ?>
                             </select>
 
-                            <input type="hidden" id="tahun">
+                            <input type="hidden" id="tahun" name="tahun">
                             <br/>
                             <b>Pilih Perencanaan</b>
-                            <select class="form form-control" id="id_perencanaan">
+                            <select class="form form-control" id="id_perencanaan" name="id_perencanaan">
                             <option>--Pilih Perencanaan--</option>
                             </select>
 
                             <br/>
-                            <b>Pilih Bulan</b>
+                <br/>
+
+                <br/>
+                <b>Pilih Bulan</b>
 
 
-                            <select class="form form-control" id="bulan">
-                            <option value="">--Pilih Bulan--</option>
-                            <option value="1">Januari</option>
-                            <option value="2">Februari</option>
-                            <option value="3">Maret</option>
-                            <option value="4">April</option>
-                            <option value="5">Mei</option>
-                            <option value="6">Juni</option>
-                            <option value="7">Juli</option>
-                            <option value="8">Agustus</option>
-                            <option value="9">September</option>
-                            <option value="10">Oktober</option>
-                            <option value="11">November</option>
-                            <option value="12">Desember</option>
-                            </select>
+<select name="bulan" class="form form-control" id="bulan">
+<option value="">--Pilih Bulan--</option>
+<option value="1">Januari</option>
+<option value="2">Februari</option>
+<option value="3">Maret</option>
+<option value="4">April</option>
+<option value="5">Mei</option>
+<option value="6">Juni</option>
+<option value="7">Juli</option>
+<option value="8">Agustus</option>
+<option value="9">September</option>
+<option value="10">Oktober</option>
+<option value="11">November</option>
+<option value="12">Desember</option>
+</select>
+<br/>
 
+<b>*Generate dahulu sebelum upload gambar</b>
+                <select class="form form-control" name="jenis_pekerjaan"> 
+                <?php
+
+                 $jp=$this->db->get("jenis_pekerjaan")->result();
+
+                 $count=count($jp);
+                 $i=0;
+
+                 while($i<$count)
+                 {
+
+                  ?>
+                  <option value="<?php echo $jp[$i]->id; ?>"><?php echo $jp[$i]->nama_jenis; ?></option>
+                  <?php
+                  $i++;
+                 }
+                ?>
+                
+                </select>
+
+                <br/>
+
+								<input type="file" name="berkas" class="btn btn-info"/>
+
+   
+
+
+
+              
+
+								<input type="submit" value="upload" class="btn btn-info"/>
+
+								</form>
+                           
                             <br/>
                             <br/>
+                            <select class="form form-control" id="diperiksa_oleh">
+									<?php
+									$diperiksa=$this->db->get("konfigurasi")->result();
+									$count=count($diperiksa);
+									$i=0;
+
+
+									while($i<$count)
+									{
+										?>
+										<option value="<?php echo $diperiksa[$i]->id_konfigurasi; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
+										<?php
+
+										$i++;
+									}
+									?>
+								</select>
 
                             <button class="btn btn-facebook" onclick="generate()">Generate</button>
+
+
+                            <br/>
+
+                            <br/>
+
+                            <b>Gambar Untuk Pekerjaan</b>
+                            <br/>
+                            <br/>
+
+                            <br/>
+                           
+
+
+							
+							
+
+
+
+                            <br/>
+
+                            <br/>
+                            <br/>
+                            <button class="btn btn-facebook" style="width:100%;" onclick="generatePDF()">Cetak PDF</button>
+
+                            <div id="cetak">
                             <center><b><h3>LAPORAN PER TAHAP</h3></b></center>
                             <center><b><h3>PELAKSANAAN KEGIATAN</h3></b></center>
+
+                            <br/>
+                            <br/>
+
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Nama Paket</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+                            
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Nilai Paket</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+
+                            
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Priode</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+                            
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Jenis Pekerjaan</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+
+                            
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Lokasi</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+
+                            
+                            <div class="row">
+                            
+                            <div class="col-sm-3">Tahun Anggaran</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-3"></div>
+                            </div>
+
+
+                            <br/>
+                            <br/>
+                            <br/>
 
                             <b>Jadwal Rencana Pelaksanaan Kegiatan</b>
                             <table class="tg table" id="tabel_satu">
 
 
 </table>
+
+<div class="break"></div>
 
 <b>Perencanaan Penggunaan Jumlah Pekerja</b>
 
@@ -210,11 +351,88 @@ body{
 
  
 </table>
+<div class="break"></div>
 
 <b>Perencanaan Penggunaan Bahan/Alat</b>
 <table class="tg table" id="tabel_tiga">
 
 </table>
+
+
+<br/>
+<br/>
+
+<b>Sketsa Kerja Rencana</b>
+
+<table class="tg table" id="tabel_empat">
+
+  <!-- <tr>
+    <td class="tg-cly1"></td>
+    <td class="tg-cly1"></td>
+    <td class="tg-0lax"></td>
+  </tr> -->
+</table>
+
+<br/>
+									 <?php
+									 function tgl_indo($tanggal){
+										 $bulan = array (
+											 1 =>   'Januari',
+											 'Februari',
+											 'Maret',
+											 'April',
+											 'Mei',
+											 'Juni',
+											 'Juli',
+											 'Agustus',
+											 'September',
+											 'Oktober',
+											 'November',
+											 'Desember'
+										 );
+										 $pecahkan = explode('-', $tanggal);
+
+										 // variabel pecahkan 0 = tanggal
+										 // variabel pecahkan 1 = bulan
+										 // variabel pecahkan 2 = tahun
+
+										 return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+									 }
+									 ?>
+
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><b>Diperiksa Oleh</b><br/><b><div id="testsaja"></div></b></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b>Jambi,<?php echo tgl_indo(date('Y-m-d')); ?></b><br/><b>Dibuat Oleh</b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
+									 <br/>
+									 <br/>
+									 <br/>
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><u><b id="diperiksa"> </b></u><br/><b id="nip_dip"></b><br/><br/></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b id="dibuat"><?php
+													 $data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
+													 $count=count($data);
+													 $i=0;
+
+													 while($i<$count)
+													 {
+														 echo "<u>".$data[$i]->nama."</u>";
+														 echo "<br/>";
+														 echo "NIP:".$data[$i]->nip;
+
+														 $i++;
+													 }
+													 ?></b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
+</div>
 
 
 
@@ -324,6 +542,41 @@ body{
 <script>
     function generate()
     {
+
+      let diperiksa_=$("#diperiksa_oleh").val();
+
+        // alert(diperiksa_);
+        // alert(diperiksa_);
+        // alert(diperiksa_);
+        //konf_kerja data
+        $.ajax({
+            type: "POST",
+            async:false,
+            url: "http://localhost/pupr_new/generate_minggu/bidang",
+            data: {"id_konfigurasi":diperiksa_},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    data=JSON.parse(data);
+                    let length=data.length;
+                    let i=0;
+
+                    console.log("Hmmmmmm");
+                    console.log(data);
+                    console.log("Hmmmmmm");
+                    // alert(data);
+
+                    while(i<length)
+                    {
+                        $("#testsaja").text(data[i].jabatan);
+                        $("#diperiksa").text(data[i].nama);
+                        $("#nip_dip").text("NIP:"+data[i].nip);
+
+                        i++;
+                    }
+                }
+        });
 
       hapus();
       $("#tabel_satu").append('    <tr>'+
@@ -461,6 +714,8 @@ body{
 
 				 while(i<length)
 				 {
+
+           
 
 					$("#tabel_satu").append("<tr>"+
                       "<td class='tg-0lax'>"+data[i].nama_jenis+"</td>"+
@@ -687,7 +942,33 @@ $("#"+data[i].jenis_pekerjaan+"__"+data[i].id_jenis_upah+"__"+sup).text(data[i].
                  {
                     
                     // $("#"+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_"+x).css("background-color","#3b5998");
-                    $("#"+data[i].id_jenis_bahan_alat+"___"+x).text(data[i].sum);
+                   
+
+
+                    if(m==1)
+                     {
+                         let sup=parseInt(x)+5;
+
+                         $("#"+data[i].id_jenis_bahan_alat+"___"+sup).text(data[i].sum);
+
+                     }
+                     else if(m==2)
+                     {
+                        let sup=parseInt(x)+10;
+                        $("#"+data[i].id_jenis_bahan_alat+"___"+sup).text(data[i].sum);
+                         
+                     }
+                     else if(m==3)
+                     {
+                        let sup=parseInt(x)+15;
+
+                        $("#"+data[i].id_jenis_bahan_alat+"___"+sup).text(data[i].sum);
+
+                     }
+                     else
+                     {
+                      $("#"+data[i].id_jenis_bahan_alat+"___"+sup).text(data[i].sum);
+                     }
 
                    i++;
                  }
@@ -703,6 +984,45 @@ $("#"+data[i].jenis_pekerjaan+"__"+data[i].id_jenis_upah+"__"+sup).text(data[i].
 
 
 
+    // Tabel paling bawah yang berisi foto dan ditambahkan secara otomatis
+    $("#tabel_empat").empty();
+
+    $("#tabel_empat").append('<tr><th class="tg-cly1">Jenis Pekerjaan</th><th class="tg-cly1">Sketsa</th><th class="tg-0lax">Keterangan</th></tr>');
+
+    // Pilih semua sketsa dari dalam tabel
+    let id_paket_j=$("#id_paket").val();
+    let id_perencanaan_j=$("#id_perencanaan").val();
+    let bulan_j=$("#bulan").val();
+    $.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/catur_wulan_baru/sketsa", 
+         data: {"id_paket":id_paket_j,"id_perencanaan":id_perencanaan_j,"bulan":bulan_j},
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+                data=JSON.parse(data);
+                console.log("gambar");
+                console.log(data);
+
+                let length=data.length;
+                let i=0;
+
+                while(i<length)
+                {
+
+                    $("#tabel_empat").append('<tr><td class="tg-cly1">'+data[i].nama_jenis+'</td>'+
+                    '<td class="tg-cly1">'+'<img style="width:200px" src="http://localhost/pupr_new/gambar/'+data[i].gambar+'">'+'</td>'+
+                    '<td class="tg-0lax"></td></tr> ');
+                  i++;
+                }
+              }
+          });
+
+       
+
+
+
        
 
 
@@ -714,6 +1034,7 @@ $("#"+data[i].jenis_pekerjaan+"__"+data[i].id_jenis_upah+"__"+sup).text(data[i].
       $("#tabel_satu").empty();
       $("#tabel_dua").empty();
       $("#tabel_tiga").empty();
+      $("#tabel_empat").empty();
     }
 </script>
 
@@ -739,6 +1060,26 @@ function getWeeksInMonth(month_number, year) {
                         var days = (lastOfMonth.getDate() - firstOfMonth.getDate())+1
                         return Math.ceil( days / 7);
                     }
+
+
+
+                    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("cetak");
+        // Choose the element and save the PDF for our user.
+        var opt = {
+            margin:       1,
+            filename:     'myfile.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' },
+            pagebreak: { before: '.break'}
+        };
+        // Choose the element and save the PDF for our user.
+        html2pdf().set(opt).from(element).save();
+
+        swal("PDF Digenerate!!");
+    }
 
 </script>
 
