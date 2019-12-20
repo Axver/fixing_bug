@@ -31,12 +31,21 @@ else
 
 	<style>
 	td,th,table{
-		border:2px solid black;
+		border:1px solid black;
 		color:black;
 	}
 
 	body{
 		color:black;
+	}
+
+	.tg-cly1{
+		text-align:center;
+	}
+
+	.tg-0lax{
+
+		text-align:center;
 	}
 	</style>
 
@@ -186,6 +195,31 @@ else
                             <br/>
                             <br/>
 
+                                    <br/>
+                            <select class="form form-control" id="diperiksa_oleh">
+									<?php
+									$diperiksa=$this->db->get("konfigurasi")->result();
+									$count=count($diperiksa);
+									$i=0;
+
+
+									while($i<$count)
+									{
+										?>
+										<option value="<?php echo $diperiksa[$i]->id_konfigurasi; ?>"><?php echo $diperiksa[$i]->nama; ?></option>
+										<?php
+
+										$i++;
+									}
+									?>
+								</select>
+
+								<br/>
+
+                <b>Progres Selanjutnya</b>
+								<input type="number" id="p_selanjutnya" class="form form-control">
+								<br/>
+
                             <button class="btn btn-facebook" onclick="generate()">Generate</button>
 
 							<br/>
@@ -196,49 +230,54 @@ else
 
               <div id="cetak">
 
+
+              <center><b><h3>LAPORAN BULANAN</h3></b></center>
+              <center><b><h3>PELAKSANAAN KEGIATAN</h3></b></center>
+              
+              <br/>
+              <br/>
+
               
               <div class="row">
 									<div class="col-sm-6">
 										<div class="row">
-											<div class="col-sm-6">Nama Paket</div>
+											<div class="col-sm-2" >Nama Paket</div>
 											<div class="col-sm-6" id="nama_paket">:</div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Jenis Pekerjaan</div>
+											<div class="col-sm-2">Jenis Pekerjaan</div>
 											<div class="col-sm-6" id="jenis_pekerjaan">:</div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Lokasi</div>
+											<div class="col-sm-2">Lokasi</div>
 											<div class="col-sm-6" id="lokasi">:</div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Pagu</div>
+											<div class="col-sm-2">Pagu</div>
 											<div class="col-sm-6" id="pagu">:</div>
-											<input type="hidden" id="nilai_paket" ">
+											<input type="hidden" id="nilai_paket" >
 										</div>
 									</div>
-									<div class="col-sm-5" style="border: 2px solid black;">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-3" style="border: 1px solid black;">
 										<div class="row">
 											<div class="col-sm-6">Progress Pekerjaan</div>
-											<div class="col-sm-6" id="progres_sekarang">:</div>
+											<div class="col-sm-6" id="progres_sekarang"></div>
 										</div>
 
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Periode Lalu</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="lalu">:</div>
 										</div>
 
-										<div class="row">
-											<div class="col-sm-6">Progress Fisik Minggu Ke-</div>
-											<div class="col-sm-6" >:</div>
-										</div>
+								
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Selanjutnya</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="selanjutnya" >:</div>
 										</div>
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Total</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="total" >:</div>
 										</div>
 									</div>
 								</div>
@@ -257,7 +296,7 @@ else
 
 <br/>
 
-<b>Rekapitulasi Pekerjaan Bulan X</b>
+<b id="rekapitulasi">Rekapitulasi Pekerjaan Bulan X</b>
 
 <br/>
 
@@ -276,6 +315,68 @@ else
 <table class="tg table" id="tabel_tiga">
  
 </table>
+
+
+
+<br/>
+									 <?php
+									 function tgl_indo($tanggal){
+										 $bulan = array (
+											 1 =>   'Januari',
+											 'Februari',
+											 'Maret',
+											 'April',
+											 'Mei',
+											 'Juni',
+											 'Juli',
+											 'Agustus',
+											 'September',
+											 'Oktober',
+											 'November',
+											 'Desember'
+										 );
+										 $pecahkan = explode('-', $tanggal);
+
+										 // variabel pecahkan 0 = tanggal
+										 // variabel pecahkan 1 = bulan
+										 // variabel pecahkan 2 = tahun
+
+										 return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+									 }
+									 ?>
+
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><b>Diperiksa Oleh</b><br/><b><div id="testsaja"></div></b></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b>Jambi,<?php echo tgl_indo(date('Y-m-d')); ?></b><br/><b>Dibuat Oleh</b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
+									 <br/>
+									 <br/>
+									 <br/>
+									 <div class="row">
+										 <div class="col-sm-1"></div>
+										 <div class="col-sm-3"><center><u><b id="diperiksa"> </b></u><br/><b id="nip_dip"></b><br/><br/></center></div>
+										 <div class="col-sm-4"></div>
+										 <div class="col-sm-3"><center><b id="dibuat"><?php
+													 $data=$this->db->get_where("account",array("nip"=>$this->session->userdata("nip")))->result();
+													 $count=count($data);
+													 $i=0;
+
+													 while($i<$count)
+													 {
+														 echo "<u>".$data[$i]->nama."</u>";
+														 echo "<br/>";
+														 echo "NRP:".$data[$i]->nip;
+
+														 $i++;
+													 }
+													 ?></b></center></div>
+										 <div class="col-sm-1"></div>
+									 </div>
+
               
               </div>
 		
@@ -393,11 +494,45 @@ else
     function generate()
     {
 
+      $("#selanjutnya").empty();
+			let selanjutnya=$("#p_selanjutnya").val();
+		  $("#selanjutnya").append(":"+selanjutnya+"%");
+
+      let diperiksa_=$("#diperiksa_oleh").val();
+      $.ajax({
+            type: "POST",
+            async:false,
+            url: "http://localhost/pupr_new/generate_minggu/bidang",
+            data: {"id_konfigurasi":diperiksa_},
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    data=JSON.parse(data);
+                    let length=data.length;
+                    let i=0;
+
+                    console.log("Hmmmmmm");
+                    console.log(data);
+                    console.log("Hmmmmmm");
+                    // alert(data);
+
+                    while(i<length)
+                    {
+                        $("#testsaja").text(data[i].jabatan);
+                        $("#diperiksa").text(data[i].nama);
+                        $("#nip_dip").text("NIP:"+data[i].nip);
+
+                        i++;
+                    }
+                }
+        });
+
       hapus();
       $("#tabel_satu").append('<tr>'+
-    '<th class="tg-cly1" rowspan="3">Jenis Pekerjaan</th>'+
-    '<th class="tg-cly1" rowspan="3">Jenis Upah</th>'+
-    '<th class="tg-cly1" colspan="5">Bulan</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Pekerjaan</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Upah</th>'+
+    '<th class="tg-cly1 bulanX" colspan="5" style="text-align:center;vertical-align: middle;border:1px solid black;">Bulan</th>'+
   '</tr>'+
   '<tr>'+
    ' <td class="tg-cly1" colspan="5">Minggu</td>'+
@@ -411,9 +546,9 @@ else
   '</tr>');
 
   $("#tabel_dua").append('<tr>'+
-    '<th class="tg-cly1" rowspan="3">Jenis Pekerjaan</th>'+
-    '<th class="tg-cly1" rowspan="3">Jenis Upah</th>'+
-    '<th class="tg-cly1" colspan="5">Bulan</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Pekerjaan</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Upah</th>'+
+    '<th class="tg-cly1 bulanX" colspan="5" style="text-align:center;vertical-align: middle;border:1px solid black;">Bulan</th>'+
   '</tr>'+
   '<tr>'+
    ' <td class="tg-cly1" colspan="5">Minggu</td>'+
@@ -427,9 +562,9 @@ else
   '</tr>');
 
   $("#tabel_tiga").append('<tr>'+
-    '<th class="tg-cly1" rowspan="3">Bahan/Alat</th>'+
-    '<th class="tg-cly1" rowspan="3">Satuan</th>'+
-    '<th class="tg-cly1" colspan="5">Bulan</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Bahan/Alat</th>'+
+    '<th class="tg-cly1" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Satuan</th>'+
+    '<th class="tg-cly1 bulanX" colspan="5" style="text-align:center;vertical-align: middle;border:1px solid black;">Bulan</th>'+
   '</tr>'+
   '<tr>'+
    ' <td class="tg-cly1" colspan="5">Minggu</td>'+
@@ -474,9 +609,12 @@ else
 				// Jangan lupa id row didasarkan pada id Pekerjaan dan id jenis upah, serta untuk minggu ditambahkan urutan
 
 	             let i=0;
+							 $("#jenis_pekerjaan").append(":");
 
 				 while(i<length)
 				 {
+
+           $("#jenis_pekerjaan").append("<br/>&nbsp&nbsp"+data[i].nama_jenis);
 
 					$("#tabel_satu").append("<tr>"+
                       "<td class='tg-0lax'>"+data[i].nama_jenis+"</td>"+
@@ -616,7 +754,263 @@ else
 
 
 
-       
+
+// Generate Nama Bulannya
+let nama_bulan=$("#bulan").val();
+
+
+let data_bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+nama_bulan=parseInt(nama_bulan);
+nama_bulan=nama_bulan-1;
+
+$(".bulanX").text(data_bulan[nama_bulan]);
+$("#rekapitulasi").text("Rekapitulasi Pekerja Bulan "+data_bulan[nama_bulan]);
+
+
+
+// Informasi Paket dari laporan tersebut
+
+let id_paket_j=$("#id_paket").val();
+$.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/generate_bulan_baru/info_paket", 
+         data: {"id_paket":id_paket_j},
+         async:false,
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+                data=JSON.parse(data);
+                let length=data.length;
+                let i=0;
+
+                while(i<length)
+                {
+                  // isi teks
+                  $("#nama_paket").text(": "+data[i].nama);
+                  $("#lokasi").text(": "+data[i].lokasi);
+                  $("#pagu").text(": "+data[i].nilai_paket);
+
+                  i++;
+                }
+              }
+          });
+
+      //  Progress Bahan Alat
+
+      $.ajax({
+               type: "POST",
+		           async:false,
+               url: "http://localhost/pupr_new/generate_bulan_baru/pekerja_minggu_sum", 
+               data: {"id_paket":id_paket,"id_perencanaan":id_perencanaan,"bulan":bulan,"tahun":tahun,"minggu":x},
+               dataType: "text",  
+               cache:false,
+               success: 
+              function(data){
+                 data=JSON.parse(data);
+				        //  console.log("Jesi Test Haha:");
+				        //  console.log(data);
+                //  console.log("Jesi Test Haha:");
+                let length=data.length;
+                let i=0;
+                let total=0;
+
+                while(i<length)
+                {
+                  total=parseInt(total)+(parseInt(data[i].sum)*parseInt(data[i].harga));
+
+                  i++;
+                }
+
+                console.log(total);
+
+                // Progress Jenis Pekerja
+                
+      $.ajax({
+               type: "POST",
+		           async:false,
+               url: "http://localhost/pupr_new/generate_bulan_baru/pekerja_minggu_sum1", 
+               data: {"id_paket":id_paket,"id_perencanaan":id_perencanaan,"bulan":bulan,"tahun":tahun,"minggu":x},
+               dataType: "text",  
+               cache:false,
+               success: 
+              function(data){
+                 data=JSON.parse(data);
+				        //  console.log("Jesi Test Haha:");
+				        //  console.log(data);
+                //  console.log("Jesi Test Haha:");
+                let length=data.length;
+                let i=0;
+                let total1=0;
+
+                while(i<length)
+                {
+                  total1=parseInt(total1)+(parseInt(data[i].sum)*parseInt(data[i].harga));
+
+                  i++;
+                }
+
+                console.log(total1);
+
+                // Progress Jenis Pekerja
+
+                let nilai_paket=$("#pagu").text();
+
+                let total2=parseInt(total)+parseInt(total1);
+                total2=parseInt(total2)/parseInt(nilai_paket);
+                total2=total2*100;
+                total2=total2.toFixed(2);
+                console.log(total2);
+
+                $("#progres_sekarang").append(":"+total2+"%");
+                
+                
+				      
+
+
+          
+              }
+          });
+
+				      
+
+
+          
+              }
+          });
+
+
+
+
+          // Progress Periode Lalu
+					let he=1;
+          bulan=parseInt(bulan)-1;
+					let total_akhir=0;
+
+					while(bulan>he)
+					{
+						$.ajax({
+               type: "POST",
+		           async:false,
+               url: "http://localhost/pupr_new/generate_bulan_baru/pekerja_minggu_sum", 
+               data: {"id_paket":id_paket,"id_perencanaan":id_perencanaan,"bulan":bulan,"tahun":tahun,"minggu":x},
+               dataType: "text",  
+               cache:false,
+               success: 
+              function(data){
+                 data=JSON.parse(data);
+				        //  console.log("Jesi Test Haha:");
+				        //  console.log(data);
+                //  console.log("Jesi Test Haha:");
+                let length=data.length;
+                let i=0;
+                let total=0;
+
+                while(i<length)
+                {
+                  total=parseInt(total)+(parseInt(data[i].sum)*parseInt(data[i].harga));
+
+                  i++;
+                }
+
+                console.log(total);
+
+                // Progress Jenis Pekerja
+                
+      $.ajax({
+               type: "POST",
+		           async:false,
+               url: "http://localhost/pupr_new/generate_bulan_baru/pekerja_minggu_sum1", 
+               data: {"id_paket":id_paket,"id_perencanaan":id_perencanaan,"bulan":bulan,"tahun":tahun,"minggu":x},
+               dataType: "text",  
+               cache:false,
+               success: 
+              function(data){
+                 data=JSON.parse(data);
+				        //  console.log("Jesi Test Haha:");
+				        //  console.log(data);
+                //  console.log("Jesi Test Haha:");
+                let length=data.length;
+                let i=0;
+                let total1=0;
+
+                while(i<length)
+                {
+                  total1=parseInt(total1)+(parseInt(data[i].sum)*parseInt(data[i].harga));
+
+                  i++;
+                }
+
+                console.log(total1);
+
+                // Progress Jenis Pekerja
+
+                let nilai_paket=$("#pagu").text();
+               let total2=0;
+               total2=parseInt(total)+parseInt(total1);
+                total2=parseInt(total2)/parseInt(nilai_paket);
+
+
+								console.log("penjumlahan persen disini");
+								console.log(total2);
+								console.log("mantap");
+                total2=total2*100;
+                total2=total2.toFixed(2);
+
+								total_akhir=parseFloat(total_akhir)+parseFloat(total2);
+              
+                
+                
+				      
+
+
+          
+              }
+          });
+
+				      
+
+
+          
+              }
+          });
+
+
+
+					bulan--;
+					}
+
+					// total_akhir=total_akhir.toFixed(2);
+					console.log(total_akhir);
+
+$("#lalu").append(":"+total_akhir+"%");
+
+
+// Progress total
+let prog_sek=$("#progres_sekarang").text();
+let prog_lalu=$("#lalu").text();
+
+console.log("Total");
+prog_sek=prog_sek.substring(0, prog_sek.length - 1);
+prog_lalu=prog_lalu.substring(0, prog_lalu.length - 1);
+console.log(prog_sek);
+console.log(prog_lalu);
+console.log("Total");
+
+let totalR=parseFloat(prog_sek)+parseFloat(prog_lalu);
+$("#total").text(":"+totalR+"%");
+      
+
+
+          // Sekarang cari total progress bulan tersebut
+          swal("Tabel di Generate!!");
+
+
+					// Ganti Namanya disana
+					// $("#rekapitulasi").text("Rekapitulasi Pekerjaan Bulan");
+
+
 
 
     }
@@ -627,6 +1021,15 @@ else
       $("#tabel_satu").empty();
       $("#tabel_dua").empty();
       $("#tabel_tiga").empty();
+			$("#progres_sekarang").empty();
+			$("#lalu").empty();
+	
+			$("#total").empty();
+			$("#jenis_pekerjaan").empty();
+
+
+
+
     }
 
 
@@ -636,7 +1039,7 @@ else
         // Choose the element and save the PDF for our user.
         var opt = {
             margin:       1,
-            filename:     'myfile.pdf',
+            filename:     'Laporan Bulanan.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' },

@@ -311,6 +311,64 @@ echo json_encode($data);
 	}
 
 
+	public function total_progress()
+	{
+
+		$tahun=$this->input->post("tahun");
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$bulan=$this->input->post("bulan");
+
+
+				// Selectd ata dari db
+				$data=$this->db->query("
+				SELECT *, SUM(total) as total FROM detail_bahan_alat_harian
+				INNER JOIN jenis_upah ON detail_bahan_alat_harian.id_jenis_upah=jenis_upah.id_jenis_upah
+				WHERE tahun='$tahun' AND MONTH(id_lap_harian_mingguan)='$bulan' AND id_lap_perencanaan='$id_perencanaan' GROUP BY detail_bahan_alat_harian.id_jenis_upah
+				")->result();
+		
+		
+				echo json_encode($data);
+
+			
+			
+
+
+		
+
+
+
+	}
+
+
+	public function total_progress1()
+	{
+
+		$tahun=$this->input->post("tahun");
+		$id_perencanaan=$this->input->post("id_perencanaan");
+		$bulan=$this->input->post("bulan");
+
+
+				// Selectd ata dari db
+				$data=$this->db->query("
+				SELECT *, SUM(jumlah) as total FROM detail_alat_harian
+				INNER JOIN jenis_bahan_alat ON detail_alat_harian.id_jenis_bahan_alat=jenis_bahan_alat.id_jenis_bahan_alat
+				WHERE tahun='$tahun' AND MONTH(id_lap_harian_mingguan)='$bulan' AND id_lap_perencanaan='$id_perencanaan' GROUP BY detail_alat_harian.id_jenis_bahan_alat
+				")->result();
+		
+		
+				echo json_encode($data);
+
+			
+			
+
+
+		
+
+
+
+	}
+
+
 
 
 

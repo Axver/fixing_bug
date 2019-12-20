@@ -35,7 +35,7 @@ else
 		}
 
 		th,td,table{
-			border: 2px solid black;
+			border: 1px solid black;
 			color: black;
 		}
 	</style>
@@ -144,6 +144,7 @@ else
 							$periode="";
 							$tanggal="";
 							$tahun="";
+							$nilai_paket="";
 
 							$i=0;
 							while($i<$conunt)
@@ -156,6 +157,7 @@ else
 									$nama_paket=$data[$ii]->nama;
 									$lokasi=$data[$ii]->lokasi;
 									$tahun=$data[$ii]->tahun;
+									$nilai_paket=$data[$ii]->nilai_paket;
 
 									$ii++;
 								}
@@ -172,33 +174,36 @@ else
 							<center><b><h3>LAPORAN PENGAWASAN</h3></b></center>
 								<center><b><h3>MINGGU KE-<b id="romawi"></b> (<b id="huruf"></b>)</h3></b></center>
 
-
+							 <input type="hidden" id="nilai_paket" value="<?php echo $nilai_paket; ?>">
+							 
+							 <br/>
+							 <br/>
 							<div class="row">
 								<div class="col-sm-8">
 									<div class="row">
-										<div class="col-sm-4">Nama Paket</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-6"><?php echo $nama_paket; ?></div>
+										<div class="col-sm-3">Nama Paket</div>
+										
+										<div class="col-sm-6">:<?php echo $nama_paket; ?></div>
 									</div>
 									<div class="row">
-										<div class="col-sm-4">Lokasi Pekerjaan</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-6"><?php echo $lokasi; ?></div>
+										<div class="col-sm-3">Lokasi Pekerjaan</div>
+										
+										<div class="col-sm-6">:<?php echo $lokasi; ?></div>
 									</div>
 									<div class="row">
-										<div class="col-sm-4">Periode Pengawasan</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-6"></div>
+										<div class="col-sm-3">Periode Pengawasan</div>
+									
+										<div class="col-sm-6" id="sampai"></div>
 									</div>
 									<div class="row">
-										<div class="col-sm-4">Tanggal</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-6"></div>
+										<div class="col-sm-3">Tanggal</div>
+										
+										<div class="col-sm-6" id="tanggal_baru"><?php echo $this->uri->segment("3") ?></div>
 									</div>
 									<div class="row">
-										<div class="col-sm-4">Tahun Anggaran</div>
-										<div class="col-sm-1">:</div>
-										<div class="col-sm-6"><?php echo $tahun; ?></div>
+										<div class="col-sm-3">Tahun Anggaran</div>
+										
+										<div class="col-sm-6">:<?php echo $tahun; ?></div>
 									</div>
 
 								</div>
@@ -212,10 +217,10 @@ else
 
 								<table class="tg table" id="tabel_satu">
 									<tr>
-										<th class="tg-cly1">Jenis Pekerjaan</th>
-										<th class="tg-cly1">Jenis Pekerja</th>
-										<th class="tg-cly1">Jumlah</th>
-										<th class="tg-0lax">Progress Pekerjaan %</th>
+										<th class="tg-cly1" style="text-align:center;border:1px solid black;">Jenis Pekerjaan</th>
+										<th class="tg-cly1" style="text-align:center;border:1px solid black;">Jenis Pekerja</th>
+										<th class="tg-cly1" style="text-align:center;border:1px solid black;">Jumlah</th>
+										<th class="tg-0lax" style="text-align:center;border:1px solid black;">Progress Pekerjaan %</th>
 									</tr>
 
 								</table>
@@ -500,7 +505,7 @@ let tanggal=$("#tanggal").val();
 					$("#tabel_satu").append('<tr>'+
 					'<td>'+data[i].nama_jenis+'</td>'+
 					'<td>'+data[i].nama+'</td>'+
-					'<td>'+data[i].jumlah+'</td>'+
+					'<td style="text-align:center">'+data[i].jumlah+'</td>'+
 					'<td></td>'+
 					'</tr>');
 
@@ -511,8 +516,10 @@ let tanggal=$("#tanggal").val();
 					'<td></td>'+
 					'<td></td>'+
 					'<td></td>'+
-					'<td id="total">Total:</td>'+
+					'<td id="total_jes">Total:</td>'+
 					'</tr>');
+
+					hehe();
               }
           });
 
@@ -524,7 +531,7 @@ function generatePDF() {
         // Choose the element and save the PDF for our user.
         var opt = {
             margin:       1,
-            filename:     'myfile.pdf',
+            filename:     'Laporan Pengawasan '+tanggal+'.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' },
@@ -565,7 +572,7 @@ let tanggal1=$("#tanggal").val();
 
 									$("#jabatan").text(data[i].jabatan);
 									$("#nama").text(data[i].konfigurasi_nama);
-									$("#nip").text("NRP."+data[i].konfigurasi_nip);
+									$("#nip").text("NIP."+data[i].konfigurasi_nip);
 									$("#nama1").text(data[i].account_nama);
 									$("#nip1").text("NRP."+data[i].account_nip);
 
@@ -574,6 +581,235 @@ let tanggal1=$("#tanggal").val();
 								}
                                 }
                                 });
+
+
+
+
+
+function hehe()
+{
+
+	let bulan=tanggal.split("-");
+	let bayar_pekerja=0;
+	let total=0;
+
+
+	let bayar_alat=0;
+	let total1=0;
+
+	// Dapatkan Total
+
+$.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/user_pengawasan_data/total_progress", 
+         data: {"tahun":bulan[0],"bulan":bulan[1],tanggal,"id_perencanaan":id_perencanaan},
+         dataType: "text",  
+		 async:false,
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+				data=JSON.parse(data);
+				console.log(data);
+
+				let length=data.length;
+				let i=0;
+				
+
+				while(i<length)
+				{
+
+					total=parseInt(total)+parseInt(data[i].total)*parseInt(data[i].harga);
+
+
+					i++;
+				}
+
+				console.log(total);
+				bayar_pekerja=total;
+
+			
+
+
+
+		
+
+
+		
+
+				
+
+              }
+          });
+
+
+		  $.ajax({
+         type: "POST",
+         url: "http://localhost/pupr_new/user_pengawasan_data/total_progress1", 
+         data: {"tahun":bulan[0],"bulan":bulan[1],tanggal,"id_perencanaan":id_perencanaan},
+         dataType: "text",  
+		 async:false,
+         cache:false,
+         success: 
+              function(data){
+                // alert(data);  //as a debugging message.
+				data=JSON.parse(data);
+				console.log(data);
+
+				let length=data.length;
+				let i=0;
+				
+
+				while(i<length)
+				{
+
+					total1=parseInt(total1)+parseInt(data[i].total)*parseInt(data[i].harga);
+
+
+					i++;
+				}
+
+				console.log(total1);
+				bayar_alat=total1;
+
+			
+
+
+
+		
+
+
+		
+
+				
+
+              }
+          });
+
+		  let nilai_paket=$("#nilai_paket").val();
+
+
+		//   console.log("jesi");
+		//   console.log(bayar_pekerja);
+		//   console.log(bayar_alat);
+		//   console.log("jesi");
+
+		  let total_akhir=parseInt(bayar_pekerja)+parseInt(bayar_alat);
+		  total_akhir=parseInt(total_akhir)/parseInt(nilai_paket);
+		  total_akhir=total_akhir*100;
+
+
+		//   console.log(total_akhir);
+
+		  $("#total_jes").text("Total:"+total_akhir+"%");
+
+}
+
+
+
+Date.prototype.getWeek = function () {
+    var target  = new Date(this.valueOf());
+    var dayNr   = (this.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNr + 3);
+    var firstThursday = target.valueOf();
+    target.setMonth(0, 1);
+    if (target.getDay() != 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+    }
+    return 1 + Math.ceil((firstThursday - target) / 604800000);
+}
+
+function getDateRangeOfWeek(weekNo){
+    var d1 = new Date();
+    numOfdaysPastSinceLastMonday = eval(d1.getDay()- 1);
+    d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+    var weekNoToday = d1.getWeek();
+    var weeksInTheFuture = eval( weekNo - weekNoToday );
+    d1.setDate(d1.getDate() + eval( 7 * weeksInTheFuture ));
+    var rangeIsFrom = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + d1.getFullYear();
+    d1.setDate(d1.getDate() + 6);
+    var rangeIsTo = eval(d1.getMonth()+1) +"/" + d1.getDate() + "/" + d1.getFullYear() ;
+    return rangeIsFrom + " to "+rangeIsTo;
+};
+
+// alert(tanggal);
+// alert(getDateRangeOfWeek(minggu));
+
+
+let rentang=getDateRangeOfWeek(minggu);
+rentang=rentang.replace(" to "," sampai ")
+// alert(rentang);
+
+let tgl_dapat=$("#tanggal").val();
+let str_builder=$("#tanggal").val();
+let tgl_final;
+tgl_dapat=tgl_dapat.split("-");
+
+if(tgl_dapat[1]==1)
+{
+	tgl_final="Januari";
+
+}
+else if(tgl_dapat[1]==2)
+{
+	tgl_final="Februari";
+
+}else if(tgl_dapat[1]==3)
+{
+	tgl_final="Maret";
+
+}else if(tgl_dapat[1]==4)
+{
+	tgl_final="April";
+
+}else if(tgl_dapat[1]==5)
+{
+	tgl_final="Mei";
+
+}else if(tgl_dapat[1]==6)
+{
+	tgl_final="Juni";
+}else if(tgl_dapat[1]==7)
+{
+	
+	tgl_final="Juli";
+}else if(tgl_dapat[1]==8)
+{
+	
+	tgl_final="Agustus";
+
+}else if(tgl_dapat[1]==9)
+{
+	tgl_final="September";
+
+}else if(tgl_dapat[1]==10)
+{
+	tgl_final="Oktober";
+
+}else if(tgl_dapat[1]==11)
+{
+	tgl_final="November";
+
+}
+else if(tgl_dapat[1]==12)
+{
+	tgl_final="Desember";
+
+}
+
+// String builder edit
+
+
+
+
+$("#sampai").text(":Bulan "+tgl_final);
+$("#tanggal_baru").text(":"+tgl_dapat[2]+" "+tgl_final+" "+tgl_dapat[0]);
+
+
+
+// Ubah Progress Pekerjaan
+// Progress pekerjaan lap pengawasan berdasakan seluruh progress di bulan-bulan sebelumnya
+
 </script>
 
 

@@ -31,10 +31,15 @@ else
 
 	<style>
 		th,td,table{
-			border:2px solid black;
+			border:1px solid black;
+			color:black;
 		}
 		body{
 			color:black;
+		}
+
+		.tg-cly1{
+			text-align:center;
 		}
 	</style>
 
@@ -137,7 +142,7 @@ else
 							<button class="btn btn-facebook" style="width:100%;" onclick="generatePDF()">Cetak PDF</button>
 							  <div id="cetak">
 							  
-							  <center><b>LAPORAN MINGGUAN</b></center>
+							  <center><b>LAPORAN HARIAN MINGGUAN</b></center>
 								<center><b>PELAKSANAAN KEGIATAN</b></center>
 								<br/>
 								<br/>
@@ -172,26 +177,26 @@ else
 
 								?>
 								<div class="row">
-									<div class="col-sm-6">
+									<div class="col-sm-7">
 										<div class="row">
-											<div class="col-sm-6">Nama Paket</div>
-											<div class="col-sm-6" id="nama_paket">:<?php echo $nama_paket ?></div>
+											<div class="col-sm-3">Nama Paket</div>
+											<div class="col-sm-8" id="nama_paket">:  <?php echo "  ".$nama_paket ?></div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Jenis Pekerjaan</div>
-											<div class="col-sm-6" id="jenis_pekerjaan">:</div>
+											<div class="col-sm-3" >Jenis Pekerjaan</div>
+											<div class="col-sm-8" id="jenis_pekerjaan">:  </div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Lokasi</div>
-											<div class="col-sm-6" id="lokasi">:<?php echo $lokasi ?></div>
+											<div class="col-sm-3">Lokasi</div>
+											<div class="col-sm-8" id="lokasi">:  <?php echo "  ".$lokasi ?></div>
 										</div>
 										<div class="row">
-											<div class="col-sm-6">Pagu</div>
-											<div class="col-sm-6" id="pagu">:<?php echo $nilai_paket; ?></div>
-											<input type="hidden" id="nilai_paket" value="<?php echo $nilai_paket; ?>">
+											<div class="col-sm-3">Pagu</div>
+											<div class="col-sm-8" id="pagu">:  <?php echo $nilai_paket; ?></div>
+											<input type="hidden" id="nilai_paket" value="<?php echo "  ".$nilai_paket; ?>">
 										</div>
 									</div>
-									<div class="col-sm-5" style="border: 2px solid black;">
+									<div class="col-sm-3" style="border: 1px solid black;">
 										<div class="row">
 											<div class="col-sm-6">Progress Pekerjaan</div>
 											<div class="col-sm-6" id="progres_sekarang">:</div>
@@ -199,20 +204,40 @@ else
 
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Periode Lalu</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="periode_lalu" >:</div>
 										</div>
 
 										<div class="row">
-											<div class="col-sm-6">Progress Fisik Minggu Ke-</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="add_gan">Progress Fisik Minggu Ke-</div>
+											<div class="col-sm-6" id="minggu_ke">:</div>
 										</div>
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Selanjutnya</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" >:
+											<?php
+
+											$id_laporan=$this->uri->segment("3");
+											$perencanaan=$this->uri->segment("4");
+
+											// Ambil data
+											$ambil=$this->db->get_where("lap_harian_mingguan",array("id_lap_harian_mingguan"=>$id_laporan,"id_lap_perencanaan"=>$perencanaan))->result();
+											$count=count($ambil);
+											$i=0;
+
+											while($i<$count)
+											{
+ 
+												echo $ambil[$i]->progres_selanjutnya."%";
+
+												$i++;
+											}
+
+                                            ?>
+											</div>
 										</div>
 										<div class="row">
 											<div class="col-sm-6">Progress Fisik Total</div>
-											<div class="col-sm-6" >:</div>
+											<div class="col-sm-6" id="progress_total" >:</div>
 										</div>
 									</div>
 								</div>
@@ -224,21 +249,21 @@ else
 
 								<table class="table table-responsive-lg" id="tabel_satu">
 									<tr>
-										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
-										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
-										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
+										<th class="tg-nrix" style="text-align:center;vertical-align: middle; border:1px solid black;" rowspan="3">Jenis Pekerjaan</th>
+										<th class="tg-nrix" style="text-align:center;vertical-align: middle; border:1px solid black;" rowspan="3">Jenis Upah</th>
+										<th class="tg-nrix bulan_jesi" style="text-align:center;vertical-align: middle; border:1px solid black;" colspan="7">Bulan</th>
 									</tr>
 									<tr>
-										<td class="tg-nrix" colspan="7">Minggu</td>
+										<td class="tg-nrix minggu_hai" colspan="7"  style="text-align:center;vertical-align: middle;border:1px solid black;">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix 1">1</td>
-										<td class="tg-nrix 2">2</td>
-										<td class="tg-nrix 3">3</td>
-										<td class="tg-nrix 4">4</td>
-										<td class="tg-nrix 5">5</td>
-										<td class="tg-nrix 6">6</td>
-										<td class="tg-nrix 7">7</td>
+										<td class="tg-nrix 1" style="text-align:center;vertical-align: middle">1</td>
+										<td class="tg-nrix 2" style="text-align:center;vertical-align: middle">2</td>
+										<td class="tg-nrix 3" style="text-align:center;vertical-align: middle">3</td>
+										<td class="tg-nrix 4" style="text-align:center;vertical-align: middle">4</td>
+										<td class="tg-nrix 5" style="text-align:center;vertical-align: middle">5</td>
+										<td class="tg-nrix 6" style="text-align:center;vertical-align: middle">6</td>
+										<td class="tg-nrix 7" style="text-align:center;vertical-align: middle">7</td>
 									</tr>
 
 								</table>
@@ -246,24 +271,24 @@ else
 								<br/>
 								<br/>
 								<br/>
-								<b>Rekapitulasi Pekerja Minggu ke-</b>
+								<b>Rekapitulasi Pekerja Minggu ke-<span class="mingguke"></span></b>
 								<table class="table table-responsive-lg" id="tabel_dua">
 									<tr>
-										<th class="tg-nrix" rowspan="3">Jenis Pekerjaan</th>
-										<th class="tg-nrix" rowspan="3">Jenis Upah</th>
-										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
+										<th class="tg-nrix" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Pekerjaan</th>
+										<th class="tg-nrix" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Upah</th>
+										<th class="tg-nrix bulan_jesi" colspan="7" style="text-align:center;vertical-align: middle;border:1px solid black;">Bulan</th>
 									</tr>
 									<tr>
-										<td class="tg-nrix" colspan="7">Minggu</td>
+										<td class="tg-nrix minggu_hai" colspan="7"  style="text-align:center;vertical-align: middle;border:1px solid black;">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix 1">1</td>
-										<td class="tg-nrix 2">2</td>
-										<td class="tg-nrix 3">3</td>
-										<td class="tg-nrix 4">4</td>
-										<td class="tg-nrix 5">5</td>
-										<td class="tg-nrix 6">6</td>
-										<td class="tg-nrix 7">7</td>
+										<td class="tg-nrix 1" style="text-align:center;vertical-align: middle">1</td>
+										<td class="tg-nrix 2" style="text-align:center;vertical-align: middle">2</td>
+										<td class="tg-nrix 3" style="text-align:center;vertical-align: middle">3</td>
+										<td class="tg-nrix 4" style="text-align:center;vertical-align: middle">4</td>
+										<td class="tg-nrix 5" style="text-align:center;vertical-align: middle">5</td>
+										<td class="tg-nrix 6" style="text-align:center;vertical-align: middle">6</td>
+										<td class="tg-nrix 7" style="text-align:center;vertical-align: middle">7</td>
 									</tr>
 
 								</table>
@@ -275,24 +300,25 @@ else
 
 
 
-								<b>Rekapitulasi Penggunaan Bahan/Alat Minggu ke-</b>
+								<b>Rekapitulasi Penggunaan Bahan/Alat Minggu ke- <span class="mingguke"></span></b>
+							
 								<table class="table table-responsive-lg" id="tabel_tiga">
 									<tr>
-										<th class="tg-nrix" rowspan="3">Jenis Bahan/Alat</th>
-										<th class="tg-nrix" rowspan="3">Satuan</th>
-										<th class="tg-nrix bulan_jesi" colspan="7">Bulan</th>
+										<th class="tg-nrix" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Jenis Bahan/Alat</th>
+										<th class="tg-nrix" rowspan="3" style="text-align:center;vertical-align: middle;border:1px solid black;">Satuan</th>
+										<th class="tg-nrix bulan_jesi" colspan="7" style="text-align:center;vertical-align: middle;border:1px solid black;">Bulan</th>
 									</tr>
 									<tr>
-										<td class="tg-nrix" colspan="7">Minggu</td>
+										<td class="tg-nrix minggu_hai" colspan="7"  style="text-align:center;vertical-align: middle;border:1px solid black;">Minggu</td>
 									</tr>
 									<tr>
-										<td class="tg-nrix 1">1</td>
-										<td class="tg-nrix 2">2</td>
-										<td class="tg-nrix 3">3</td>
-										<td class="tg-nrix 4">4</td>
-										<td class="tg-nrix 5">5</td>
-										<td class="tg-nrix 6">6</td>
-										<td class="tg-nrix 7">7</td>
+										<td class="tg-nrix 1" style="text-align:center;vertical-align: middle">1</td>
+										<td class="tg-nrix 2" style="text-align:center;vertical-align: middle">2</td>
+										<td class="tg-nrix 3" style="text-align:center;vertical-align: middle">3</td>
+										<td class="tg-nrix 4" style="text-align:center;vertical-align: middle">4</td>
+										<td class="tg-nrix 5" style="text-align:center;vertical-align: middle">5</td>
+										<td class="tg-nrix 6" style="text-align:center;vertical-align: middle">6</td>
+										<td class="tg-nrix 7" style="text-align:center;vertical-align: middle">7</td>
 									</tr>
 
 								</table>
@@ -419,7 +445,7 @@ else
 
 
 <script>
-<!--	Ambil data dan isikan kedalam tabel-->
+
 let id_harian=$("#id_harian").val();
 let id_perencanaan=$("#id_perencanaan").val();
 
@@ -447,7 +473,7 @@ $.ajax({
 				}
 			    else
 				{
-				    $("#jenis_pekerjaan").append("<br/>"+"-"+data[i].nama_jenis);
+				    $("#jenis_pekerjaan").append("<br/>&nbsp&nbsp"+data[i].nama_jenis);
                     $("#tabel_satu").append('\t\t<tr>\n' +
                         '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 " id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_pekerjaan"+'">'+data[i].nama_jenis+'</td>\n' +
                         '\t\t\t\t\t\t\t\t\t\t<td class="tg-cly1 jenis_upah_klik" id="'+data[i].jenis_pekerjaan+"_"+data[i].id_jenis_upah+"_upah"+'">'+data[i].nama+'</td>\n' +
@@ -536,7 +562,9 @@ $.ajax({
 
 
 <script>
-<!--	Script untuk mencari Progress-->
+
+
+
 
 $.ajax({
     type: "POST",
@@ -601,8 +629,10 @@ $.ajax({
 
                         // alert(progres_sekarang);
 						progres_sekarang=progres_sekarang.toFixed(2);
+						$("#progres_sekarang").append(progres_sekarang+"%");
+						$("#minggu_ke").append(progres_sekarang+"%");
 
-                        $("#progres_sekarang").append(progres_sekarang+"%");
+                        
 
 
 
@@ -618,7 +648,9 @@ $.ajax({
 
 
 
-//Cari Progress Fisik Peiode Sebelumnya
+
+
+   
 
 
 
@@ -648,7 +680,7 @@ $.ajax({
 
 									$("#jabatan").text(data[i].jabatan);
 									$("#nama").text(data[i].konfigurasi_nama);
-									$("#nip").text("NRP."+data[i].konfigurasi_nip);
+									$("#nip").text("NIP."+data[i].konfigurasi_nip);
 									$("#nama1").text(data[i].account_nama);
 									$("#nip1").text("NRP."+data[i].account_nip);
 
@@ -771,6 +803,180 @@ Date.prototype.getWeek = function () {
 	// Mengganti tulisan tanggal engan tanggal sesungguhnya
 	// Coba disini
 
+	//Cari Progress Fisik Peiode Sebelumnya
+let z=1;
+				       while(z<=54)
+					   {
+
+                           week=getDateRangeOfWeek(z);
+                           week=week.split(" to ")
+						   // console.log(week);
+                           // console.log(week[0].toDateString());
+                           tanggal_start=stringToDate(week[0],"MM/dd/yyyy","/");
+                           tanggal_end=stringToDate(week[1],"MM/dd/yyyy","/");
+                           tanggal_pilihan=new Date(id_harian);
+                           // console.log(tanggal_start);
+                           // console.log(tanggal_end);
+                           // console.log(tanggal_pilihan);
+                           if(tanggal_start<tanggal_pilihan && tanggal_pilihan<tanggal_end)
+						   {
+						       minggu_get=z;
+						       console.log(minggu_get);
+							//    
+						
+							// alert(minggu_get);
+
+							// Ambil jumlah minggu dalam satu bulan
+							let y=1;
+							let total=0;
+							let id_harian=$("#id_harian").val();
+								id_harian=id_harian.split("-");
+								let minggu_bulan=0;
+							while(y<id_harian[1])
+							{
+
+								
+
+								minggu_bulan=parseInt(minggu_bulan)+parseInt(getWeeksInMonth(y,id_harian[0]));
+                              
+							  
+
+              
+								y++;
+							}
+							// alert(minggu_bulan);
+							total=parseInt(minggu_get)-parseInt(minggu_bulan);
+							// alert(total);
+							$(".minggu_hai").text("Minggu "+total);
+							$(".mingguke").text(" "+total);
+						   }
+
+						  
+
+					       z++;
+					   }
+
+// alert(minggu_get);
+
+$("#add_gan").append(minggu_get);
+
+
+
+// Progress fisik sebelumnya
+minggu_get=parseInt(minggu_get)-1;
+
+let sebelmunya=getDateRangeOfWeek(minggu_get);
+
+// alert(sebelmunya);
+let yamaha=sebelmunya.split(" to ");
+
+
+let sebelmunya1=getDateRangeOfWeek(1);
+let yamaha1=sebelmunya1.split(" to ");
+
+// Ajax untuk mencarinya
+$.ajax({
+         type: "POST",
+		 async:false,
+         url: "http://localhost/pupr_new/view_harian/sebelumnya", 
+         data: {"id_perencanaan":id_perencanaan,"start":yamaha1[0],"end":yamaha[1]},
+         dataType: "text",  
+         cache:false,
+         success: 
+              function(data){
+				data=JSON.parse(data);
+            console.log(data);
+            let length=data.length;
+            let i=0;
+            console.log("hmmm");
+
+            let total_pekerja=0;
+
+            while(i<length)
+			{
+               total_pekerja=total_pekerja+(parseInt(data[i].total)*parseInt(data[i].harga));
+
+			    i++;
+			}
+            console.log("yuhu");
+			console.log(total_pekerja);
+			console.log("yuhu");
+
+             
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/pupr_new/view_harian/jenis_alat_baru_sum1",
+                data: {"id_perencanaan":id_perencanaan,"start":yamaha1[0],"end":yamaha[1]},
+                async:false,
+                dataType: "text",
+                cache:false,
+                success:
+                    function(data){
+                        // alert(data);  //as a debugging message.
+                        data=JSON.parse(data);
+                        console.log(data);
+                        let length=data.length;
+                        let i=0;
+                        console.log("hmmm");
+
+                        let total_alat=0;
+
+                        while(i<length)
+                        {
+                            total_alat=total_alat+(parseInt(data[i].total)*parseInt(data[i].harga));
+
+                            i++;
+                        }
+
+                        console.log(total_pekerja);
+                        console.log(total_alat);
+                        let nilai_paket=0;
+                        nilai_paket=$("#nilai_paket").val();
+                        nilai_paket=parseInt(nilai_paket);
+
+                    //    Progres sekarang
+						let progres_sekarang=total_alat+total_pekerja;
+                        progres_sekarang=progres_sekarang/nilai_paket;
+                        progres_sekarang=progres_sekarang*100;
+
+                        // alert(progres_sekarang);
+						progres_sekarang=progres_sekarang.toFixed(2);
+						$("#periode_lalu").append(progres_sekarang+"%");
+						
+
+                        
+
+
+
+
+
+                    }
+            });
+
+
+              }
+});
+
+
+
+let pp=$("#progres_sekarang").text();
+pp=pp.slice(1,-1);
+let pl=$("#periode_lalu").text();
+
+pl=pl.slice(1,-1);
+
+pp=parseFloat(pp);
+pl=parseFloat(pl);
+
+pt=pp+pl;
+
+$("#progress_total").append(pt+"%");
+// alert(pp);
+// alert(pl);
+// alert(pt);
+
+
+
 
 
 	let dataM=id_harian;
@@ -823,11 +1029,12 @@ Date.prototype.getWeek = function () {
 
 
                 console.log(convert(tanggal_ambil));
+				$("."+m).text(convert(tanggal_ambil));
 				var tomorrow = new Date(tanggal_ambil);
                 tomorrow.setDate(tomorrow.getDate() + 1);
 				tanggal_ambil=tomorrow;
 
-				$("."+m).text(convert(tanggal_ambil));
+				
 				
 				m++;
 			}
@@ -915,13 +1122,16 @@ Date.prototype.getWeek = function () {
 }
 
 
+let id_harian_akhi=$("#id_harian").val();
+
+
 function generatePDF() {
         // Choose the element that our invoice is rendered in.
         const element = document.getElementById("cetak");
         // Choose the element and save the PDF for our user.
         var opt = {
             margin:       1,
-            filename:     'myfile.pdf',
+            filename:     'Laporan Harian '+id_harian_akhi+'.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' },
